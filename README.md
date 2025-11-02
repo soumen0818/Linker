@@ -1,6 +1,16 @@
 # Linker
 
+[![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/linkerdev.import-linker)](https://marketplace.visualstudio.com/items?itemName=linkerdev.import-linker)
+[![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/linkerdev.import-linker)](https://marketplace.visualstudio.com/items?itemName=linkerdev.import-linker)
+[![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/r/linkerdev.import-linker)](https://marketplace.visualstudio.com/items?itemName=linkerdev.import-linker)
+
 Linker helps keep imports in sync when files or folders are renamed/moved. It scans your project for import statements referencing the old path, shows a preview, and applies edits when you confirm.
+
+## 🚀 Installation
+
+Install from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=linkerdev.import-linker)
+
+Or search for **"Linker"** in VS Code Extensions (Ctrl+Shift+X)
 
 ## Usage
 1. Install the extension (or run it in dev mode).
