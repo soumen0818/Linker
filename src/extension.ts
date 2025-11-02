@@ -59,20 +59,19 @@ export function activate(context: vscode.ExtensionContext) {
                 for (const f of files) {
                     if (f.fsPath === newUri.fsPath) continue;
                     const doc = await vscode.workspace.openTextDocument(f);
-                    const text = doc.getText();
                     const edits: vscode.TextEdit[] = [];
 
-                    // Simple approach: find all import statements line by line
-                    const lines = doc.getText().split('\n');
+                    // Process line by line for accurate position tracking
+                    const lineCount = doc.lineCount;
 
-                    for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
-                        const line = lines[lineIndex];
+                    for (let lineIndex = 0; lineIndex < lineCount; lineIndex++) {
+                        const line = doc.lineAt(lineIndex);
+                        const lineText = line.text;
 
                         // Match import/require/export statements
-                        const importMatch = line.match(/(?:import\s.*?from\s*|require\s*\(\s*|export\s.*?from\s*)(['"])(.*?)\1/);
+                        const importMatch = lineText.match(/(?:import\s.*?from\s*|require\s*\(\s*|export\s.*?from\s*)(['"])(.*?)\1/);
 
                         if (importMatch) {
-                            const quote = importMatch[1];
                             const importPath = importMatch[2];
 
                             // Check if this import matches the old file
@@ -87,15 +86,30 @@ export function activate(context: vscode.ExtensionContext) {
                                 console.log(`Linker: MATCH! "${importPath}" → "${newImportPath}"`);
 
                                 if (newImportPath !== importPath) {
-                                    // Find the exact column where the import path starts
-                                    const importPathStartCol = line.indexOf(quote + importPath) + 1; // +1 to skip quote
+                                    // Simple string search to find where the import path is
+                                    // We search for the quote+path pattern to be precise
+                                    const searchPattern = `'${importPath}'`;
+                                    const searchPattern2 = `"${importPath}"`;
 
-                                    const startPos = new vscode.Position(lineIndex, importPathStartCol);
-                                    const endPos = new vscode.Position(lineIndex, importPathStartCol + importPath.length);
+                                    let startCol = lineText.indexOf(searchPattern);
+                                    if (startCol === -1) {
+                                        startCol = lineText.indexOf(searchPattern2);
+                                    }
 
-                                    console.log(`Linker: Replace at line ${lineIndex + 1}, col ${importPathStartCol}-${importPathStartCol + importPath.length}`);
+                                    if (startCol !== -1) {
+                                        // Skip the opening quote
+                                        startCol += 1;
+                                        const endCol = startCol + importPath.length;
 
-                                    edits.push(vscode.TextEdit.replace(new vscode.Range(startPos, endPos), newImportPath));
+                                        const startPos = new vscode.Position(lineIndex, startCol);
+                                        const endPos = new vscode.Position(lineIndex, endCol);
+
+                                        console.log(`Linker: Replacing at line ${lineIndex + 1}, columns ${startCol}-${endCol}`);
+                                        console.log(`Linker: Text to replace: "${lineText.substring(startCol, endCol)}"`);
+                                        console.log(`Linker: New text: "${newImportPath}"`);
+
+                                        edits.push(vscode.TextEdit.replace(new vscode.Range(startPos, endPos), newImportPath));
+                                    }
                                 }
                             }
                         }
