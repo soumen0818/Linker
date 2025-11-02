@@ -1,13 +1,13 @@
 {
-    "name": "linker",
+    "name": "import-linker",
     "displayName": "Linker",
     "description": "Keep your imports in sync when files or folders are renamed/moved — preview changes before applying.",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "publisher": "linkerdev",
     "icon": "images/Linker.png",
     "repository": {
         "type": "git",
-        "url": "https://github.com/yourusername/linker"
+        "url": "https://github.com/soumen0818/Linker"
     },
     "keywords": [
         "import",

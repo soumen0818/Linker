@@ -4,11 +4,23 @@ import * as path from 'path';
 function toImportPath(from: vscode.Uri, to: vscode.Uri) {
     // compute a relative import path from file 'from' to file 'to'
     // returns posix style path without extension for JS/TS imports
-    const rel = path.posix.relative(path.posix.dirname(from.path), to.path);
-    let out = rel.startsWith('.') ? rel : './' + rel;
-    // remove file extension
-    out = out.replace(/\.(js|ts|jsx|tsx)$/, '');
-    return out;
+
+    // Convert Windows paths to POSIX
+    const fromPath = from.fsPath.replace(/\\/g, '/');
+    const toPath = to.fsPath.replace(/\\/g, '/');
+
+    const fromDir = path.posix.dirname(fromPath);
+    let rel = path.posix.relative(fromDir, toPath);
+
+    // Ensure it starts with ./ or ../
+    if (!rel.startsWith('.')) {
+        rel = './' + rel;
+    }
+
+    // Remove file extension
+    rel = rel.replace(/\.(js|ts|jsx|tsx)$/, '');
+
+    return rel;
 }
 
 function escapeRegExp(s: string) {
@@ -34,16 +46,13 @@ export function activate(context: vscode.ExtensionContext) {
                 const oldUri = file.oldUri;
                 const newUri = file.newUri;
 
-                // derive old import path text we might find in other files
-                const oldImportNoExt = toImportPath({ path: oldUri.path } as any as vscode.Uri, oldUri).replace(/\.(js|ts|jsx|tsx)$/, '');
-                // We'll search by several candidates: with and without extension, with ./ and without
-                const candidates = new Set<string>();
-                candidates.add(oldImportNoExt);
-                candidates.add('./' + oldImportNoExt);
-                candidates.add('../' + oldImportNoExt);
+                // Get the old filename without extension
+                const oldFileName = path.posix.basename(oldUri.path).replace(/\.(js|ts|jsx|tsx)$/, '');
+
+                console.log('Linker: File renamed from', oldUri.fsPath, 'to', newUri.fsPath);
+                console.log('Linker: Looking for imports of:', oldFileName);
 
                 // For simplicity: search workspace text for the base filename occurrences and then run regex check
-                const fileName = path.posix.basename(oldUri.path);
                 const searchPattern = `**/*.{${extList.join(',')}}`;
                 const files = await vscode.workspace.findFiles(searchPattern, exPattern);
 
@@ -53,27 +62,41 @@ export function activate(context: vscode.ExtensionContext) {
                     const text = doc.getText();
                     const edits: vscode.TextEdit[] = [];
 
-                    // regex to detect import/require statements (heuristic)
-                    // matches: import ... from '...'; require('...') ; export ... from '...'
-                    const importRegex = /(?:import\s[\s\S]*?from\s*|require\(|export\s[\s\S]*?from\s*)(['"])(.*?)\1/g;
-                    let m: RegExpExecArray | null;
-                    while ((m = importRegex.exec(text)) !== null) {
-                        const full = m[0];
-                        const quote = m[1];
-                        const imp = m[2];
+                    // Simple approach: find all import statements line by line
+                    const lines = doc.getText().split('\n');
 
-                        // if the import contains the old file name or candidate
-                        if (imp.includes(path.posix.basename(oldUri.path)) || imp.includes(oldImportNoExt)) {
-                            // compute new import path relative to this doc
-                            const newImportPath = toImportPath(f, newUri as vscode.Uri);
-                            // Only change if newImportPath different
-                            if (newImportPath && newImportPath !== imp) {
-                                const start = m.index + full.lastIndexOf(quote);
-                                const end = start + quote.length + imp.length + quote.length - 1;
-                                // compute replacement range
-                                const rangeStart = doc.positionAt(start + 1); // inside quote
-                                const rangeEnd = doc.positionAt(start + 1 + imp.length);
-                                edits.push(vscode.TextEdit.replace(new vscode.Range(rangeStart, rangeEnd), newImportPath));
+                    for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+                        const line = lines[lineIndex];
+
+                        // Match import/require/export statements
+                        const importMatch = line.match(/(?:import\s.*?from\s*|require\s*\(\s*|export\s.*?from\s*)(['"])(.*?)\1/);
+
+                        if (importMatch) {
+                            const quote = importMatch[1];
+                            const importPath = importMatch[2];
+
+                            // Check if this import matches the old file
+                            const importedFileName = path.posix.basename(importPath).replace(/\.(js|ts|jsx|tsx)$/, '');
+
+                            console.log(`Linker: Line ${lineIndex + 1}: Found import "${importPath}"`);
+
+                            if (importedFileName === oldFileName) {
+                                // Calculate new import path
+                                const newImportPath = toImportPath(f, newUri);
+
+                                console.log(`Linker: MATCH! "${importPath}" → "${newImportPath}"`);
+
+                                if (newImportPath !== importPath) {
+                                    // Find the exact column where the import path starts
+                                    const importPathStartCol = line.indexOf(quote + importPath) + 1; // +1 to skip quote
+
+                                    const startPos = new vscode.Position(lineIndex, importPathStartCol);
+                                    const endPos = new vscode.Position(lineIndex, importPathStartCol + importPath.length);
+
+                                    console.log(`Linker: Replace at line ${lineIndex + 1}, col ${importPathStartCol}-${importPathStartCol + importPath.length}`);
+
+                                    edits.push(vscode.TextEdit.replace(new vscode.Range(startPos, endPos), newImportPath));
+                                }
                             }
                         }
                     }
