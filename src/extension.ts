@@ -1,0 +1,165 @@
+import * as vscode from 'vscode';
+import * as path from 'path';
+
+function toImportPath(from: vscode.Uri, to: vscode.Uri) {
+    // compute a relative import path from file 'from' to file 'to'
+    // returns posix style path without extension for JS/TS imports
+    const rel = path.posix.relative(path.posix.dirname(from.path), to.path);
+    let out = rel.startsWith('.') ? rel : './' + rel;
+    // remove file extension
+    out = out.replace(/\.(js|ts|jsx|tsx)$/, '');
+    return out;
+}
+
+function escapeRegExp(s: string) {
+    return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+export function activate(context: vscode.ExtensionContext) {
+    console.log('Linker is active');
+
+    const config = vscode.workspace.getConfiguration('linker');
+
+    const renameDisposable = vscode.workspace.onDidRenameFiles(async (ev) => {
+        try {
+            const excludes: string[] = config.get('exclude', ['**/node_modules/**', '**/.git/**']);
+            const exPattern = '{' + excludes.join(',') + '}';
+            const extList: string[] = config.get('fileExtensions', ['js', 'ts', 'jsx', 'tsx']);
+            const glob = `**/*.{${extList.join(',')}}`;
+
+            // accumulate all proposed edits
+            const allEdits: Array<{ file: vscode.Uri, edits: vscode.TextEdit[], summary: string }> = [];
+
+            for (const file of ev.files) {
+                const oldUri = file.oldUri;
+                const newUri = file.newUri;
+
+                // derive old import path text we might find in other files
+                const oldImportNoExt = toImportPath({ path: oldUri.path } as any as vscode.Uri, oldUri).replace(/\.(js|ts|jsx|tsx)$/, '');
+                // We'll search by several candidates: with and without extension, with ./ and without
+                const candidates = new Set<string>();
+                candidates.add(oldImportNoExt);
+                candidates.add('./' + oldImportNoExt);
+                candidates.add('../' + oldImportNoExt);
+
+                // For simplicity: search workspace text for the base filename occurrences and then run regex check
+                const fileName = path.posix.basename(oldUri.path);
+                const searchPattern = `**/*.{${extList.join(',')}}`;
+                const files = await vscode.workspace.findFiles(searchPattern, exPattern);
+
+                for (const f of files) {
+                    if (f.fsPath === newUri.fsPath) continue;
+                    const doc = await vscode.workspace.openTextDocument(f);
+                    const text = doc.getText();
+                    const edits: vscode.TextEdit[] = [];
+
+                    // regex to detect import/require statements (heuristic)
+                    // matches: import ... from '...'; require('...') ; export ... from '...'
+                    const importRegex = /(?:import\s[\s\S]*?from\s*|require\(|export\s[\s\S]*?from\s*)(['"])(.*?)\1/g;
+                    let m: RegExpExecArray | null;
+                    while ((m = importRegex.exec(text)) !== null) {
+                        const full = m[0];
+                        const quote = m[1];
+                        const imp = m[2];
+
+                        // if the import contains the old file name or candidate
+                        if (imp.includes(path.posix.basename(oldUri.path)) || imp.includes(oldImportNoExt)) {
+                            // compute new import path relative to this doc
+                            const newImportPath = toImportPath(f, newUri as vscode.Uri);
+                            // Only change if newImportPath different
+                            if (newImportPath && newImportPath !== imp) {
+                                const start = m.index + full.lastIndexOf(quote);
+                                const end = start + quote.length + imp.length + quote.length - 1;
+                                // compute replacement range
+                                const rangeStart = doc.positionAt(start + 1); // inside quote
+                                const rangeEnd = doc.positionAt(start + 1 + imp.length);
+                                edits.push(vscode.TextEdit.replace(new vscode.Range(rangeStart, rangeEnd), newImportPath));
+                            }
+                        }
+                    }
+
+                    if (edits.length > 0) {
+                        allEdits.push({ file: f, edits, summary: `${f.fsPath} -> ${edits.length} changes` });
+                    }
+                }
+            }
+
+            if (allEdits.length === 0) {
+                vscode.window.showInformationMessage('Linker: No import updates needed for the rename/move.');
+                return;
+            }
+
+            // Show preview webview
+            const panel = vscode.window.createWebviewPanel('linkerPreview', 'Linker: Preview Changes', vscode.ViewColumn.One, {
+                enableScripts: true
+            });
+
+            const listHtml = allEdits.map((e, idx) => `<li data-idx="${idx}"><strong>${vscode.Uri.file(e.file.fsPath).fsPath}</strong>: ${e.summary}</li>`).join('');
+
+            panel.webview.html = `<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Linker Preview</title>
+    <style>
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; padding: 12px }
+      ul { list-style: none; padding: 0 }
+      li { margin: 8px 0; padding: 8px; border-radius: 6px; background: #f5f5f5 }
+      .actions { margin-top: 12px }
+      button { margin-right: 8px; padding: 6px 12px }
+    </style>
+  </head>
+  <body>
+    <h2>Linker — Preview Changes</h2>
+    <p>The following files will be updated. Click <strong>Apply</strong> to apply edits.</p>
+    <ul>
+      ${listHtml}
+    </ul>
+    <div class="actions">
+      <button id="apply">Apply</button>
+      <button id="cancel">Cancel</button>
+    </div>
+    <script>
+      const vscode = acquireVsCodeApi();
+      document.getElementById('apply').addEventListener('click', () => {
+        vscode.postMessage({ cmd: 'apply' });
+      });
+      document.getElementById('cancel').addEventListener('click', () => {
+        vscode.postMessage({ cmd: 'cancel' });
+      });
+    </script>
+  </body>
+</html>`;
+
+            // handle messages
+            panel.webview.onDidReceiveMessage(async (msg) => {
+                if (msg.cmd === 'apply') {
+                    const wsEdit = new vscode.WorkspaceEdit();
+                    for (const item of allEdits) {
+                        for (const te of item.edits) {
+                            wsEdit.replace(item.file, te.range, te.newText);
+                        }
+                    }
+                    const ok = await vscode.workspace.applyEdit(wsEdit);
+                    if (ok) {
+                        vscode.window.showInformationMessage(`Linker: Applied ${allEdits.reduce((s, a) => s + a.edits.length, 0)} edits.`);
+                        panel.dispose();
+                    } else {
+                        vscode.window.showErrorMessage('Linker: Failed to apply edits.');
+                    }
+                } else if (msg.cmd === 'cancel') {
+                    panel.dispose();
+                }
+            });
+
+        } catch (err) {
+            console.error('Linker error', err);
+            vscode.window.showErrorMessage('Linker: Error while processing rename. See console for details.');
+        }
+    });
+
+    context.subscriptions.push(renameDisposable);
+}
+
+export function deactivate() { }

@@ -1,0 +1,69 @@
+{
+    "name": "linker",
+    "displayName": "Linker",
+    "description": "Keep your imports in sync when files or folders are renamed/moved — preview changes before applying.",
+    "version": "0.1.0",
+    "publisher": "linkerdev",
+    "icon": "images/Linker.png",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/yourusername/linker"
+    },
+    "keywords": [
+        "import",
+        "refactor",
+        "rename",
+        "move",
+        "javascript",
+        "typescript",
+        "react"
+    ],
+    "engines": {
+        "vscode": "^1.75.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./dist/extension.js",
+    "contributes": {
+        "configuration": {
+            "type": "object",
+            "title": "Linker",
+            "properties": {
+                "linker.exclude": {
+                    "type": "array",
+                    "default": [
+                        "**/node_modules/**",
+                        "**/.git/**"
+                    ],
+                    "description": "Glob patterns to exclude from scanning"
+                },
+                "linker.fileExtensions": {
+                    "type": "array",
+                    "default": [
+                        "js",
+                        "ts",
+                        "jsx",
+                        "tsx"
+                    ],
+                    "description": "File extensions to scan for imports"
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run build",
+        "build": "tsc -p ./",
+        "watch": "tsc -w -p ./",
+        "pretest": "npm run build"
+    },
+    "devDependencies": {
+        "@types/node": "^18.0.0",
+        "@types/vscode": "^1.75.0",
+        "typescript": "^5.0.0",
+        "@vscode/test-electron": "^2.3.0"
+    }
+}
