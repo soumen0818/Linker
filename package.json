@@ -2,7 +2,7 @@
     "name": "import-linker",
     "displayName": "Linker",
     "description": "Keep your imports in sync when files or folders are renamed/moved — preview changes before applying.",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "publisher": "linkerdev",
     "icon": "images/Linker.png",
     "repository": {
