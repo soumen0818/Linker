@@ -1,27 +1,39 @@
 {
+    "$schema": "https://json.schemastore.org/package",
     "name": "import-linker",
-    "displayName": "Linker",
-    "description": "Keep your imports in sync when files or folders are renamed/moved — preview changes before applying.",
-    "version": "0.1.2",
+    "displayName": "Linker - Auto Import Updater",
+    "description": "Automatically updates import statements when you rename or move files and folders. Supports JavaScript, TypeScript, React, and more.",
+    "version": "1.0.0",
     "publisher": "linkerdev",
     "icon": "images/Linker.png",
     "repository": {
         "type": "git",
         "url": "https://github.com/soumen0818/Linker"
     },
+    "bugs": {
+        "url": "https://github.com/soumen0818/Linker/issues"
+    },
+    "homepage": "https://github.com/soumen0818/Linker#readme",
+    "license": "MIT",
     "keywords": [
         "import",
         "refactor",
         "rename",
         "move",
+        "auto-import",
         "javascript",
         "typescript",
-        "react"
+        "react",
+        "es6",
+        "modules",
+        "imports",
+        "productivity"
     ],
     "engines": {
         "vscode": "^1.75.0"
     },
     "categories": [
+        "Programming Languages",
         "Other"
     ],
     "activationEvents": [
@@ -33,6 +45,11 @@
             "type": "object",
             "title": "Linker",
             "properties": {
+                "linker.autoStageChanges": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Automatically stage files modified by Linker in Git"
+                },
                 "linker.exclude": {
                     "type": "array",
                     "default": [
