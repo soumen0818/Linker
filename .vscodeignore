@@ -1,0 +1,49 @@
+# Build files
+src/
+tsconfig.json
+.vscode/
+.vscode-test/
+
+# Git files
+.git/
+.gitignore
+.gitattributes
+
+# Documentation (keep only what's needed for marketplace)
+Doc/
+user_guide_doc/
+PHASE1-DOCUMENTATION.md
+PHASE1-SUMMARY.md
+QUICK-START.md
+BUG-FIX-VERIFICATION.md
+PUBLISHING-GUIDE.md
+
+# Test files
+test/
+*.test.js
+*.test.ts
+*.spec.js
+*.spec.ts
+coverage/
+
+# Node modules (bundled in dist/)
+node_modules/
+
+# Misc
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintrc*
+.prettierrc*
+*.vsix
+
+# Keep only these files:
+# - dist/ (compiled code)
+# - images/ (icon and screenshots)
+# - README.md (marketplace description)
+# - CHANGELOG.md (version history)
+# - LICENSE (required)
+# - package.json (manifest)
+# - USER-GUIDE.md (user documentation)

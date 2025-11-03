@@ -3,3 +3,6 @@ dist
 out
 *.vsix
 .vscode-test
+
+Doc
+user_guide_doc
