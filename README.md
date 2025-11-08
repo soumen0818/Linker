@@ -9,7 +9,7 @@
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/linkerdev.import-linker?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=linkerdev.import-linker)
 [![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)](LICENSE)
 
-![Linker Demo](images/Linker-logo.png)
+![Linker Demo](images/linker-logo.png)
 
 **Never break imports again** — Automatically update all import statements when you rename or move files and folders.
 
