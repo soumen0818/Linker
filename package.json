@@ -2,10 +2,10 @@
     "$schema": "https://json.schemastore.org/package",
     "name": "import-linker",
     "displayName": "Linker - Auto Import Updater",
-    "description": "Automatically updates import statements when you rename or move files and folders. Supports JavaScript, TypeScript, React, and more.",
-    "version": "1.0.0",
+    "description": "Automatically updates import statements when you rename or move files and folders. Supports JavaScript, TypeScript, React, Python, Java, Go, and CSS with enhanced diff preview and undo/redo.",
+    "version": "1.1.0",
     "publisher": "linkerdev",
-    "icon": "images/Linker.png",
+    "icon": "images/Linker logo.png",
     "repository": {
         "type": "git",
         "url": "https://github.com/soumen0818/Linker"
@@ -41,6 +41,34 @@
     ],
     "main": "./dist/extension.js",
     "contributes": {
+        "commands": [
+            {
+                "command": "linker.undo",
+                "title": "Linker: Undo Last Import Changes"
+            },
+            {
+                "command": "linker.redo",
+                "title": "Linker: Redo Import Changes"
+            },
+            {
+                "command": "linker.showHistory",
+                "title": "Linker: Show Change History"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "linker.undo",
+                "key": "ctrl+alt+z",
+                "mac": "cmd+alt+z",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "linker.redo",
+                "key": "ctrl+alt+y",
+                "mac": "cmd+alt+y",
+                "when": "editorTextFocus"
+            }
+        ],
         "configuration": {
             "type": "object",
             "title": "Linker",
@@ -64,9 +92,79 @@
                         "js",
                         "ts",
                         "jsx",
-                        "tsx"
+                        "tsx",
+                        "py",
+                        "java",
+                        "go",
+                        "css",
+                        "scss",
+                        "less"
                     ],
                     "description": "File extensions to scan for imports"
+                },
+                "linker.preview.diffView": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Show enhanced diff view with before/after comparison"
+                },
+                "linker.preview.layout": {
+                    "type": "string",
+                    "enum": [
+                        "side-by-side",
+                        "inline"
+                    ],
+                    "default": "side-by-side",
+                    "description": "Layout for diff preview: side-by-side or inline"
+                },
+                "linker.formatting.quoteStyle": {
+                    "type": "string",
+                    "enum": [
+                        "single",
+                        "double",
+                        "auto"
+                    ],
+                    "default": "auto",
+                    "description": "Quote style for import paths: single quotes, double quotes, or auto-detect"
+                },
+                "linker.formatting.semicolons": {
+                    "type": "string",
+                    "enum": [
+                        "always",
+                        "never",
+                        "auto"
+                    ],
+                    "default": "auto",
+                    "description": "Semicolon usage: always add, never add, or auto-detect from existing code"
+                },
+                "linker.history.enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable undo/redo functionality for import changes"
+                },
+                "linker.history.maxEntries": {
+                    "type": "number",
+                    "default": 50,
+                    "description": "Maximum number of history entries to keep"
+                },
+                "linker.multiLanguage.python": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable Python import detection and updates"
+                },
+                "linker.multiLanguage.java": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable Java import detection and updates"
+                },
+                "linker.multiLanguage.go": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable Go import detection and updates"
+                },
+                "linker.multiLanguage.css": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable CSS/SCSS/LESS @import detection and updates"
                 }
             }
         }
