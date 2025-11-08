@@ -2,18 +2,18 @@
 
 # 🔗 Linker
 
-### Automatically update import statements when you rename or move files
+### Intelligent Import Management for Multi-Language Projects
 
 [![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/linkerdev.import-linker?style=for-the-badge&logo=visual-studio-code)](https://marketplace.visualstudio.com/items?itemName=linkerdev.import-linker)
 [![Installs](https://img.shields.io/visual-studio-marketplace/i/linkerdev.import-linker?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=linkerdev.import-linker)
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/linkerdev.import-linker?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=linkerdev.import-linker)
 [![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)](LICENSE)
 
-![Linker Logo](images/Linker.png)
+![Linker Demo](images/Linker%20logo.png)
 
-**Keep your imports in sync** — Never worry about broken imports when refactoring your codebase.
+**Never break imports again** — Automatically update all import statements when you rename or move files and folders.
 
-[Features](#-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [Configuration](#-configuration) • [Examples](#-examples)
+[Features](#-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [Languages](#-supported-languages) • [Configuration](#%EF%B8%8F-configuration) • [Documentation](#-documentation)
 
 </div>
 
@@ -21,268 +21,363 @@
 
 ## ✨ Features
 
-### 🎯 Core Capabilities
+### 🎯 Phase 2 - Production Ready
 
-- **🔄 Automatic Import Updates** — Rename files and folders without breaking imports
-- **📁 Folder Rename Support** — Move entire directories with all nested files
-- **🎨 TypeScript Alias Resolution** — Full support for path aliases (`@/`, `~/`, custom paths)
-- **🔍 Preview Before Apply** — Review all proposed changes before confirming
-- **🌐 Multi-Language Support** — JavaScript, TypeScript, JSX, TSX, ESM, CommonJS
+Linker has reached Phase 2 with enterprise-grade features for professional development workflows.
 
-### ⚡ Performance & Optimization
+#### 🔄 **Smart Import Updates**
+- Automatically detect and update imports when files or folders are renamed
+- Works across your entire workspace instantly
+- Preserves your code formatting style (quotes, semicolons, indentation)
 
-- **⚡ File Caching** — Avoids redundant file reads
-- **⏱️ Smart Debouncing** — Handles rapid consecutive renames efficiently
-- **📦 Batch Processing** — Processes large codebases in chunks
-- **📊 Progress Reporting** — Visual progress for operations with 10+ files
-- **🚀 Scalable** — Handles projects with 1000+ files
+#### 📊 **Visual Diff Preview**
+- See all import changes before applying them
+- Side-by-side or inline diff view with syntax highlighting
+- One-click apply or cancel with full control
 
-### 🛡️ Production Ready
+#### ⏮️ **Complete Undo/Redo System**
+- Full history tracking for all import changes
+- Keyboard shortcuts: `Ctrl+Alt+Z` (undo) / `Ctrl+Alt+Y` (redo)
+- History preserved across VS Code sessions
+- Configurable history limit (default: 50 entries)
 
-- **🔧 Git Integration** — Uses `git mv` for tracked files, auto-stages changes
-- **🏗️ Modular Architecture** — 8 specialized modules for maintainability
-- **🛡️ Robust Error Handling** — Graceful degradation with user-friendly messages
-- **⚙️ Comprehensive Configuration** — 10+ settings for fine-tuning
-- **📚 Complete Documentation** — Detailed guides and troubleshooting
+#### 🌐 **Multi-Language Support**
+- **JavaScript/TypeScript** — ES6 imports, CommonJS require, dynamic imports
+- **Python** — `import` and `from...import` statements with dot notation
+- **Java** — Package imports and static imports
+- **Go** — Single and block import statements
+- **CSS/SCSS/LESS** — `@import` and `@import url()` statements
+
+#### 🎨 **Advanced Path Resolution**
+- TypeScript path aliases (`@/`, `~/`, custom paths)
+- Relative imports (`./`, `../`)
+- Absolute imports
+- Nested folder structures
+
+#### ⚡ **Performance Optimized**
+- File caching to avoid redundant reads
+- Batch processing for large codebases
+- Smart debouncing for rapid renames
+- Handles projects with 1000+ files efficiently
+
+#### 🔧 **Git Integration**
+- Automatic `git mv` for tracked files
+- Optional auto-staging of modified files
+- Works seamlessly with your Git workflow
 
 ---
 
 ## 📦 Installation
 
-### From VS Code Marketplace (Recommended)
+### Method 1: VS Code Marketplace (Recommended)
 
-1. Open **VS Code**
+1. Open **Visual Studio Code**
 2. Press `Ctrl+Shift+X` (Windows/Linux) or `Cmd+Shift+X` (Mac)
-3. Search for **"Linker"**
+3. Search for **"Linker"** or **"Import Linker"**
 4. Click **Install**
 
-### Quick Install via Command Line
+### Method 2: Command Line
 
 ```bash
 code --install-extension linkerdev.import-linker
 ```
 
+### Method 3: Manual Installation
+
+1. Download the `.vsix` file from [Releases](https://github.com/soumen0818/Linker/releases)
+2. Open VS Code
+3. Go to Extensions (`Ctrl+Shift+X`)
+4. Click `...` menu → `Install from VSIX...`
+5. Select the downloaded file
+
 ---
 
 ## 🚀 Quick Start
 
-### How It Works
+### Basic Usage (3 Steps)
 
-1. **Rename a file** in VS Code Explorer (Right-click → Rename or press `F2`)
+1. **Rename a file or folder** in VS Code Explorer
+   - Right-click → Rename or press `F2`
+
 2. **Review the preview** showing which imports will be updated
-3. **Click "Apply"** to update all imports automatically
+   - Visual diff shows before/after comparison
+   - See exactly which files will be modified
 
-That's it! ✅ All import statements are updated across your entire project.
+3. **Click "Apply"** to update all imports
+   - All imports updated instantly across your workspace
+   - Or click "Cancel" to abort
 
----
+**That's it!** ✅ No configuration needed to get started.
 
-## 💡 Examples
+### Your First Rename
 
-### Example 1: Renaming a File
+Try this simple example:
 
-**Before renaming `utils.ts` → `helpers.ts`:**
+1. Create two files:
+   ```typescript
+   // utils.ts
+   export const hello = () => "Hello!";
+   
+   // app.ts
+   import { hello } from './utils';
+   ```
 
-```typescript
-// src/utils.ts
-export const formatDate = (date: Date) => {
-  return date.toLocaleDateString();
-};
+2. Rename `utils.ts` → `helpers.ts`
 
-// src/components/Dashboard.tsx
-import { formatDate } from '../utils';
-```
-
-**After renaming** (Linker automatically updates):
-
-```typescript
-// src/helpers.ts
-export const formatDate = (date: Date) => {
-  return date.toLocaleDateString();
-};
-
-// src/components/Dashboard.tsx
-import { formatDate } from '../helpers';  // ✅ Updated!
-```
+3. Watch Linker automatically update `app.ts`:
+   ```typescript
+   import { hello } from './helpers'; // ✅ Updated!
+   ```
 
 ---
 
-### Example 2: Moving a Folder
+## 🌐 Supported Languages
 
-**Before renaming `src/services` → `src/api`:**
-
+### JavaScript / TypeScript
 ```typescript
-// src/components/UserList.tsx
-import { fetchUsers } from '../services/userService';
-import { deleteUser } from '../services/userService';
+// ES6 imports
+import { Component } from './Component';
+import * as utils from '@/utils';
+
+// CommonJS
+const helper = require('../helper');
+
+// Dynamic imports
+const module = await import('./module');
 ```
 
-**After renaming** (Linker automatically updates):
+### Python
+```python
+# Absolute imports
+from utils.helpers import format_date
+import utils.helpers
 
-```typescript
-// src/components/UserList.tsx
-import { fetchUsers } from '../api/userService';  // ✅ Updated!
-import { deleteUser } from '../api/userService';  // ✅ Updated!
+# Relative imports
+from .helpers import format_date
+from ..utils import helpers
 ```
 
----
+### Java
+```java
+// Package imports
+import com.example.utils.Helper;
 
-### Example 3: TypeScript Path Aliases
-
-**Configuration in `tsconfig.json`:**
-
-```json
-{
-  "compilerOptions": {
-    "baseUrl": "./src",
-    "paths": {
-      "@/*": ["*"],
-      "~/components/*": ["components/*"]
-    }
-  }
-}
+// Static imports
+import static com.example.utils.Helper.doSomething;
 ```
 
-**Before renaming `src/utils` → `src/helpers`:**
+### Go
+```go
+// Single imports
+import "project/utils"
 
-```typescript
-// src/pages/Home.tsx
-import { validateEmail } from '@/utils/validators';
+// Block imports
+import (
+    "fmt"
+    "project/utils"
+    "project/helpers"
+)
 ```
 
-**After renaming** (Linker resolves aliases and updates):
+### CSS / SCSS / LESS
+```css
+/* CSS imports */
+@import "partials/variables.css";
+@import url("partials/mixins.css");
 
-```typescript
-// src/pages/Home.tsx
-import { validateEmail } from '@/helpers/validators';  // ✅ Updated!
+/* SCSS imports */
+@import 'base/reset';
 ```
 
 ---
 
 ## ⚙️ Configuration
 
-### Recommended Settings
+Linker works out-of-the-box with smart defaults. Customize via VS Code Settings (`Ctrl+,`).
 
-Open VS Code Settings (`Ctrl+,`) and search for **"Linker"**, or add to your `settings.json`:
-
-```json
-{
-  "linker.exclude": [
-    "**/node_modules/**",
-    "**/.git/**",
-    "**/dist/**",
-    "**/build/**"
-  ],
-  "linker.fileExtensions": ["js", "ts", "jsx", "tsx", "mjs", "cjs"],
-  "linker.git.enabled": true,
-  "linker.git.autoStage": true,
-  "linker.performance.debounceDelay": 500
-}
-```
-
-### All Configuration Options
-
-| Setting | Type | Default | Description |
-|---------|------|---------|-------------|
-| `linker.exclude` | `string[]` | `['**/node_modules/**', '**/.git/**']` | Glob patterns to exclude from scanning |
-| `linker.fileExtensions` | `string[]` | `['js', 'ts', 'jsx', 'tsx']` | File extensions to scan for imports |
-| `linker.git.enabled` | `boolean` | `true` | Use git mv for tracked files |
-| `linker.git.autoStage` | `boolean` | `true` | Auto-stage import updates |
-| `linker.performance.debounceDelay` | `number` | `500` | Delay in ms before processing renames |
-| `linker.performance.batchSize` | `number` | `50` | Files to process per batch |
-| `linker.performance.cacheTTL` | `number` | `300000` | Cache time-to-live in ms (5 min) |
-| `linker.performance.enableProgressReporting` | `boolean` | `true` | Show progress for large operations |
-
-### Performance Tuning by Project Size
-
-<details>
-<summary><b>Small Project</b> (&lt; 100 files)</summary>
+### Essential Settings
 
 ```json
 {
-  "linker.performance.debounceDelay": 200,
-  "linker.performance.batchSize": 100
+  // File scanning
+  "linker.fileExtensions": ["js", "ts", "py", "java", "go", "css"],
+  "linker.exclude": ["**/node_modules/**", "**/.git/**"],
+  
+  // Preview options
+  "linker.preview.diffView": true,
+  "linker.preview.layout": "side-by-side",
+  
+  // Formatting preferences
+  "linker.formatting.quoteStyle": "auto",
+  "linker.formatting.semicolons": "auto",
+  
+  // History management
+  "linker.history.enabled": true,
+  "linker.history.maxEntries": 50,
+  
+  // Language toggles
+  "linker.multiLanguage.python": true,
+  "linker.multiLanguage.java": true,
+  "linker.multiLanguage.go": true,
+  "linker.multiLanguage.css": true,
+  
+  // Git integration
+  "linker.autoStageChanges": false
 }
 ```
-</details>
 
-<details>
-<summary><b>Medium Project</b> (100-500 files)</summary>
+### Quick Settings Guide
 
-```json
-{
-  "linker.performance.debounceDelay": 500,
-  "linker.performance.batchSize": 50
-}
-```
-</details>
+| Setting | Description | Default |
+|---------|-------------|---------|
+| `fileExtensions` | File types to scan | All supported |
+| `exclude` | Patterns to ignore | node_modules, .git |
+| `preview.diffView` | Show visual preview | `true` |
+| `preview.layout` | Diff layout style | `side-by-side` |
+| `formatting.quoteStyle` | Quote preference | `auto` |
+| `formatting.semicolons` | Semicolon usage | `auto` |
+| `history.enabled` | Enable undo/redo | `true` |
+| `history.maxEntries` | History limit | `50` |
+| `autoStageChanges` | Auto-stage in Git | `false` |
 
-<details>
-<summary><b>Large Project</b> (500+ files)</summary>
-
-```json
-{
-  "linker.performance.debounceDelay": 1000,
-  "linker.performance.batchSize": 25,
-  "linker.exclude": [
-    "**/node_modules/**",
-    "**/.git/**",
-    "**/dist/**",
-    "**/build/**",
-    "**/*.test.{js,ts,jsx,tsx}",
-    "**/*.spec.{js,ts,jsx,tsx}"
-  ]
-}
-```
-</details>
+**See [USER_GUIDE.md](USER_GUIDE.md) for detailed configuration options.**
 
 ---
 
-## 🎓 Supported Import Patterns
+## 📚 Documentation
 
-Linker recognizes and updates all common JavaScript/TypeScript import patterns:
+- **[User Guide](USER_GUIDE.md)** — Complete documentation with examples
+---
 
-```javascript
-// ✅ ES6 Named Imports
-import { foo, bar } from './utils';
+## 💡 Examples
 
-// ✅ ES6 Namespace Imports
-import * as helpers from './helpers';
+### Example 1: Simple File Rename
 
-// ✅ ES6 Default Imports
-import React from 'react';
-import Component from './Component';
+**Scenario:** Rename `utils.ts` → `helpers.ts`
 
-// ✅ CommonJS Require
-const utils = require('./utils');
-const { helper } = require('../helpers');
+```typescript
+// Before
+// src/utils.ts
+export const formatDate = () => { /* ... */ };
 
-// ✅ Dynamic Imports
-const module = await import('./dynamic');
-import('./lazy').then(m => m.default);
+// src/app.ts
+import { formatDate } from './utils';
+```
 
-// ✅ Re-exports
-export { something } from './other';
-export * from './all';
+**After** (Linker auto-updates):
+```typescript
+// src/app.ts
+import { formatDate } from './helpers'; // ✅ Updated!
+```
 
-// ✅ TypeScript Path Aliases
-import { Button } from '@/components/Button';
-import { useAuth } from '~/hooks/useAuth';
+### Example 2: Folder Rename
+
+**Scenario:** Rename `services/` → `api/`
+
+```typescript
+// Before
+import { fetchUsers } from '../services/userService';
+
+// After (Linker auto-updates)
+import { fetchUsers } from '../api/userService'; // ✅ Updated!
+```
+
+### Example 3: Python Imports
+
+**Scenario:** Rename `helpers.py` → `utilities.py`
+
+```python
+# Before
+from utils.helpers import format_date
+
+# After (Linker auto-updates)
+from utils.utilities import format_date  # ✅ Updated!
+```
+
+### Example 4: Java Package Imports
+
+**Scenario:** Rename `Helper.java` → `Utility.java`
+
+```java
+// Before
+import com.example.utils.Helper;
+import static com.example.utils.Helper.doSomething;
+
+// After (Linker auto-updates)
+import com.example.utils.Utility;  // ✅ Updated!
+import static com.example.utils.Utility.doSomething;  // ✅ Updated!
+```
+
+### Example 5: CSS Imports
+
+**Scenario:** Rename `variables.css` → `vars.css`
+
+```css
+/* Before */
+@import "partials/variables.css";
+
+/* After (Linker auto-updates) */
+@import "partials/vars.css";  /* ✅ Updated! */
 ```
 
 ---
 
-## 🔧 Advanced Features
+## ⌨️ Keyboard Shortcuts
 
-### Git Integration
+| Action | Windows/Linux | Mac |
+|--------|---------------|-----|
+| Undo last import changes | `Ctrl+Alt+Z` | `Cmd+Alt+Z` |
+| Redo import changes | `Ctrl+Alt+Y` | `Cmd+Alt+Y` |
+| Show import history | `Ctrl+Shift+P` → "Linker: Show History" | Same |
 
-When enabled, Linker uses `git mv` instead of regular file system moves:
+---
 
-```json
-{
-  "linker.git.enabled": true,
-  "linker.git.autoStage": true
-}
-```
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+---
+
+## 📝 License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+---
+
+## 🆘 Support
+
+- **Issues:** [GitHub Issues](https://github.com/soumen0818/Linker/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/soumen0818/Linker/discussions)
+- **Documentation:** [Complete User Guide](USER_GUIDE.md)
+
+---
+
+## 🌟 Show Your Support
+
+If Linker saves you time, please:
+- ⭐ Star the [GitHub repository](https://github.com/soumen0818/Linker)
+- ⭐ Rate on [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=linkerdev.import-linker)
+- 💬 Share with your team
+
+---
+
+## 📊 Project Status
+
+**Current Version:** 1.1.0 (Phase 2)  
+**Status:** Production Ready ✅  
+**Languages:** 5 (JavaScript/TypeScript, Python, Java, Go, CSS)  
+**Active Development:** Yes  
+**Last Updated:** November 2025
+
+---
+
+<div align="center">
+
+**Made with ❤️ for developers who value their time**
+
+[⬆ Back to Top](#-linker)
+
+</div>
 
 **Benefits:**
 - ✅ Preserves git file history
