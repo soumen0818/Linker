@@ -30,7 +30,13 @@ export class LinkerConfig {
      * Get file extensions to scan for imports
      */
     getFileExtensions(): string[] {
-        return this.config.get('fileExtensions', ['js', 'ts', 'jsx', 'tsx']);
+        return this.config.get('fileExtensions', [
+            'js', 'ts', 'jsx', 'tsx', 'mjs', 'cjs',  // JavaScript/TypeScript
+            'py',                                      // Python
+            'java',                                    // Java
+            'go',                                      // Go
+            'css', 'scss', 'less'                     // CSS
+        ]);
     }
 
     /**
