@@ -19,6 +19,22 @@
 
 ---
 
+## ⚠️ Large Codebase? READ THIS FIRST
+
+If your project has **1,000+ files**, add these settings to `.vscode/settings.json`:
+
+```json
+{
+  "linker.performance.maxFilesToScan": 8000,
+  "linker.performance.maxConcurrentFiles": 10,
+  "linker.exclude": ["**/node_modules/**", "**/.git/**", "**/dist/**", "**/build/**"]
+}
+```
+
+**Then reload VS Code**. See [EMERGENCY-FIX.md](EMERGENCY-FIX.md) for detailed setup.
+
+---
+
 ## ✨ Features
 
 ### 🎯 Phase 2 - Production Ready
@@ -49,16 +65,28 @@ Linker has reached Phase 2 with enterprise-grade features for professional devel
 - **CSS/SCSS/LESS** — `@import` and `@import url()` statements
 
 #### 🎨 **Advanced Path Resolution**
-- TypeScript path aliases (`@/`, `~/`, custom paths)
+- **TypeScript/JavaScript path aliases** — `@/`, `~/`, custom tsconfig.json paths
+- **Python path aliases** — Auto-detects src/, app/, lib/ structures, pyproject.toml support
+- **Java package resolution** — Maven pom.xml, Gradle build.gradle source roots
+- **Go module paths** — go.mod module paths and replace directives
+- **CSS build tool aliases** — webpack, vite, parcel `@` and `~` aliases
 - Relative imports (`./`, `../`)
 - Absolute imports
 - Nested folder structures
 
+> **🎯 USP:** Only extension with **full alias support across ALL 5 languages!**
+
 #### ⚡ **Performance Optimized**
+- **Production-ready for large codebases** — Handles 50,000+ files
+- **Smart scanning** with configurable limits (default: 10,000 files)
+- **File size filtering** — Automatically skips oversized files
+- **Operation timeouts** — Prevents hanging on massive projects
+- **Dynamic concurrency** — Adjusts based on workspace size
+- **Workspace analysis** — Auto-detects and optimizes for large projects
 - File caching to avoid redundant reads
-- Batch processing for large codebases
-- Smart debouncing for rapid renames
-- Handles projects with 1000+ files efficiently
+- Batch processing for optimal performance
+
+💡 **Having issues with large projects?** See [Large Codebase Guide](LARGE-CODEBASE-GUIDE.md)
 
 #### 🔧 **Git Integration**
 - Automatic `git mv` for tracked files
@@ -137,7 +165,7 @@ Try this simple example:
 ```typescript
 // ES6 imports
 import { Component } from './Component';
-import * as utils from '@/utils';
+import * as utils from '@/utils';  // ✅ Path aliases supported!
 
 // CommonJS
 const helper = require('../helper');
@@ -145,6 +173,8 @@ const helper = require('../helper');
 // Dynamic imports
 const module = await import('./module');
 ```
+
+**Alias Support:** Reads `tsconfig.json` for path mappings (`@/*`, `~/*`, etc.)
 
 ### Python
 ```python
@@ -155,7 +185,12 @@ import utils.helpers
 # Relative imports
 from .helpers import format_date
 from ..utils import helpers
+
+# Path aliases (NEW!)
+from @.models.user import User  # ✅ Alias support!
 ```
+
+**Alias Support:** Auto-detects `src/`, `app/`, `lib/` directories, or reads `pyproject.toml`
 
 ### Java
 ```java
@@ -166,6 +201,8 @@ import com.example.utils.Helper;
 import static com.example.utils.Helper.doSomething;
 ```
 
+**Alias Support:** Reads Maven `pom.xml` and Gradle `build.gradle` for source roots
+
 ### Go
 ```go
 // Single imports
@@ -174,10 +211,12 @@ import "project/utils"
 // Block imports
 import (
     "fmt"
-    "project/utils"
-    "project/helpers"
+    "github.com/user/myproject/utils"  // ✅ Module paths!
+    "github.com/user/myproject/helpers"
 )
 ```
+
+**Alias Support:** Reads `go.mod` for module paths and replace directives
 
 ### CSS / SCSS / LESS
 ```css
@@ -185,9 +224,12 @@ import (
 @import "partials/variables.css";
 @import url("partials/mixins.css");
 
-/* SCSS imports */
-@import 'base/reset';
+/* SCSS imports with aliases (NEW!) */
+@import '@styles/base/reset';  /* ✅ Webpack/Vite aliases! */
+@import '@assets/fonts/custom';
 ```
+
+**Alias Support:** Reads `webpack.config.js` and `vite.config.js` for `@` and `~` aliases
 
 ---
 
@@ -217,9 +259,13 @@ Linker works out-of-the-box with smart defaults. Customize via VS Code Settings 
   
   // Language toggles
   "linker.multiLanguage.python": true,
+  "linker.multiLanguage.python.aliasSupport": true,  // NEW!
   "linker.multiLanguage.java": true,
+  "linker.multiLanguage.java.aliasSupport": true,    // NEW!
   "linker.multiLanguage.go": true,
+  "linker.multiLanguage.go.aliasSupport": true,      // NEW!
   "linker.multiLanguage.css": true,
+  "linker.multiLanguage.css.aliasSupport": true,     // NEW!
   
   // Git integration
   "linker.autoStageChanges": false
@@ -244,9 +290,106 @@ Linker works out-of-the-box with smart defaults. Customize via VS Code Settings 
 
 ---
 
+## 🎯 Multi-Language Alias Support
+
+**NEW in v1.3.0:** Linker now supports path aliases across ALL 5 languages!
+
+### TypeScript/JavaScript Aliases
+
+**Configuration:** `tsconfig.json`
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "~/*": ["src/*"]
+    }
+  }
+}
+```
+
+**Example:**
+```typescript
+import { Button } from '@/components/Button';  // Before rename
+import { ButtonNew } from '@/components/ButtonNew';  // After rename ✅
+```
+
+### Python Aliases
+
+**Configuration:** `pyproject.toml` (optional)
+```toml
+[tool.linker.paths]
+app = "src"
+models = "src/models"
+utils = "src/utils"
+```
+
+**Auto-Detection:** Linker automatically detects `src/`, `app/`, `lib/`, `utils/` directories
+
+**Example:**
+```python
+from @.models.user import User  # Before rename
+from @.models.account import User  # After rename ✅
+```
+
+### Java Aliases
+
+**Configuration:** `pom.xml` or `build.gradle`
+
+Linker automatically reads your Maven/Gradle source directories.
+
+**Example:**
+```java
+import com.example.models.User;  // Before rename
+import com.example.models.Account;  // After rename ✅
+```
+
+### Go Aliases
+
+**Configuration:** `go.mod`
+```go
+module github.com/user/myproject
+
+replace github.com/user/myproject/old => ./new
+```
+
+**Example:**
+```go
+import "github.com/user/myproject/models"  // Before rename
+import "github.com/user/myproject/entities"  // After rename ✅
+```
+
+### CSS Aliases
+
+**Configuration:** `webpack.config.js` or `vite.config.js`
+```javascript
+// webpack.config.js
+module.exports = {
+  resolve: {
+    alias: {
+      '@styles': path.resolve(__dirname, 'src/styles'),
+      '@assets': path.resolve(__dirname, 'src/assets')
+    }
+  }
+};
+```
+
+**Example:**
+```scss
+@import '@styles/variables';  // Before rename
+@import '@styles/theme';  // After rename ✅
+```
+
+**📖 Full Testing Guide:** See [MULTI-LANGUAGE-TESTING-GUIDE.md](MULTI-LANGUAGE-TESTING-GUIDE.md)
+
+---
+
 ## 📚 Documentation
 
 - **[User Guide](USER_GUIDE.md)** — Complete documentation with examples
+- **[Multi-Language Testing Guide](MULTI-LANGUAGE-TESTING-GUIDE.md)** — Test all alias features
+- **[Large Codebase Guide](LARGE-CODEBASE-GUIDE.md)** — Troubleshooting for production/enterprise projects
 ---
 
 ## 💡 Examples
@@ -461,11 +604,31 @@ Skip unnecessary directories to improve performance:
 **Try:** Reload VS Code window after updating `tsconfig.json`
 </details>
 
+<details>
+<summary><strong>❌ Python imports not working / Pylance conflict</strong></summary>
+
+**Problem:** Pylance and Linker both try to update Python imports, causing conflicts.
+
+**Solution:** Linker automatically disables Pylance's auto-import features. If issues persist:
+
+```json
+// .vscode/settings.json
+{
+  "python.analysis.autoImportCompletions": false,
+  "python.analysis.autoFormatStrings": false
+}
+```
+
+**Full documentation:** See [PYLANCE-CONFLICT.md](./Doc/PYLANCE-CONFLICT.md)
+</details>
+
 ---
 
 ## 📚 Documentation
 
 - **[USER-GUIDE.md](./USER-GUIDE.md)** — Comprehensive user guide with examples
+- **[PYLANCE-CONFLICT.md](./Doc/PYLANCE-CONFLICT.md)** — Python/Pylance conflict resolution (NEW!)
+- **[TESTING-GUIDE.md](./Doc/TESTING-GUIDE.md)** — Multi-language testing guide (NEW!)
 - **[CHANGELOG.md](./CHANGELOG.md)** — Version history and release notes
 - **[LICENSE](./LICENSE)** — MIT License
 
