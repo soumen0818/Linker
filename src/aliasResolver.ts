@@ -166,4 +166,39 @@ export class AliasResolver {
     getAliases(): string[] {
         return Array.from(this.pathMappings.keys());
     }
+
+    /**
+     * Convert a file path to its alias representation
+     * @param filePath The absolute file path
+     * @returns The alias path (e.g., '@/components/Footer') or undefined if not mappable
+     */
+    filePathToAlias(filePath: string): string | undefined {
+        const normalizedPath = filePath.replace(/\\/g, '/');
+
+        // Try each path mapping
+        for (const [pattern, targets] of this.pathMappings.entries()) {
+            for (const target of targets) {
+                // Resolve the target directory
+                const targetPath = path.resolve(this.baseUrl || this.workspaceRoot, target.replace('*', ''));
+                const normalizedTarget = targetPath.replace(/\\/g, '/');
+
+                // Check if the file is under this target directory
+                if (normalizedPath.startsWith(normalizedTarget)) {
+                    // Get the relative path from the target
+                    const relativePath = normalizedPath.substring(normalizedTarget.length);
+
+                    // Remove leading slash and file extension
+                    const cleanPath = relativePath.replace(/^\//, '').replace(/\.(js|ts|jsx|tsx|mjs|cjs)$/, '');
+
+                    // Build the alias path
+                    const aliasPrefix = pattern.replace('/*', '');
+                    const aliasPath = `${aliasPrefix}/${cleanPath}`;
+
+                    return aliasPath;
+                }
+            }
+        }
+
+        return undefined;
+    }
 }
