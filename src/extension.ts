@@ -33,20 +33,56 @@ export async function activate(context: vscode.ExtensionContext) {
         // Disable VS Code's built-in import updates to avoid conflicts
         const tsConfig = vscode.workspace.getConfiguration('typescript');
         const jsConfig = vscode.workspace.getConfiguration('javascript');
+        const pythonConfig = vscode.workspace.getConfiguration('python');
 
         await tsConfig.update('updateImportsOnFileMove.enabled', 'never', vscode.ConfigurationTarget.Workspace);
         await jsConfig.update('updateImportsOnFileMove.enabled', 'never', vscode.ConfigurationTarget.Workspace);
 
-        console.log('Linker: Disabled VS Code built-in import updates');
+        // Disable Python/Pylance auto-import and refactoring features to prevent conflicts
+        await pythonConfig.update('analysis.autoImportCompletions', false, vscode.ConfigurationTarget.Workspace);
+        await pythonConfig.update('analysis.autoSearchPaths', false, vscode.ConfigurationTarget.Workspace);
+        await pythonConfig.update('analysis.fixAll', [], vscode.ConfigurationTarget.Workspace);
 
-        // Register file rename listener (AFTER rename happens)
-        // We handle imports ourselves after the rename is complete
-        const renameDisposable = vscode.workspace.onDidRenameFiles(async (event) => {
+        console.log('Linker: Disabled VS Code and Python extension built-in import updates');
+
+        // Show one-time notification about Pylance
+        const linkerState = context.globalState;
+        const hasShownPylanceNotice = linkerState.get<boolean>('hasShownPylanceNotice', false);
+        if (!hasShownPylanceNotice) {
+            vscode.window.showInformationMessage(
+                'Linker: Disabled Pylance auto-import features to prevent conflicts. Pylance will still provide IntelliSense and type checking.',
+                'Got it'
+            ).then(() => {
+                linkerState.update('hasShownPylanceNotice', true);
+            });
+        }
+
+        // Register WILL rename listener (BEFORE rename happens)
+        // This allows us to provide edits that will be applied atomically with the rename
+        // This prevents conflicts with Pylance which also uses willRenameFiles
+        const willRenameDisposable = vscode.workspace.onWillRenameFiles((event) => {
             if (!renameHandler) {
                 return;
             }
 
-            // Handle rename with user confirmation
+            console.log('Linker: onWillRenameFiles triggered');
+
+            // CRITICAL: waitUntil MUST be called synchronously (not after await)
+            // Create the promise immediately and pass it to waitUntil
+            const editsPromise = renameHandler.prepareRenameEdits(event);
+            event.waitUntil(editsPromise);
+        });
+
+        // Also register DID rename listener as fallback for user confirmation flow
+        const didRenameDisposable = vscode.workspace.onDidRenameFiles(async (event) => {
+            if (!renameHandler) {
+                return;
+            }
+
+            // ALWAYS handle Git integration (runs after the file has been renamed on disk)
+            await renameHandler.handleGitRename(event);
+
+            // Handle rename with user confirmation (only if willRename didn't handle it)
             await renameHandler.handleRenameWithConfirmation(event);
         });
 
@@ -115,7 +151,8 @@ export async function activate(context: vscode.ExtensionContext) {
         });
 
         context.subscriptions.push(
-            renameDisposable,
+            willRenameDisposable,
+            didRenameDisposable,
             configChangeDisposable,
             undoCommand,
             redoCommand,
