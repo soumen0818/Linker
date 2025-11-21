@@ -84,7 +84,7 @@ Linker has reached Phase 2 with enterprise-grade features for professional devel
 - File caching to avoid redundant reads
 - Batch processing for optimal performance
 
-💡 **Having issues with large projects?** See [Large Codebase Guide](LARGE-CODEBASE-GUIDE.md)
+💡 **Having issues with large projects?** See configuration settings below
 
 #### 🔧 **Git Integration**
 - Automatic `git mv` for tracked files
@@ -229,7 +229,7 @@ Linker works out-of-the-box with smart defaults. Customize via VS Code Settings 
 ```json
 {
   // File scanning
-  "linker.fileExtensions": ["js", "ts", "py", "java", "go", "css"],
+  "linker.fileExtensions": ["js", "ts", "py", "go", "css"],
   "linker.exclude": ["**/node_modules/**", "**/.git/**"],
   
   // Preview options
@@ -354,15 +354,6 @@ module.exports = {
 @import '@styles/theme';  // After rename ✅
 ```
 
-**📖 Full Testing Guide:** See [MULTI-LANGUAGE-TESTING-GUIDE.md](MULTI-LANGUAGE-TESTING-GUIDE.md)
-
----
-
-## 📚 Documentation
-
-- **[User Guide](USER_GUIDE.md)** — Complete documentation with examples
-- **[Multi-Language Testing Guide](MULTI-LANGUAGE-TESTING-GUIDE.md)** — Test all alias features
-- **[Large Codebase Guide](LARGE-CODEBASE-GUIDE.md)** — Troubleshooting for production/enterprise projects
 ---
 
 ## 💡 Examples
@@ -465,47 +456,11 @@ If Linker saves you time, please:
 
 ## 📊 Project Status
 
-**Current Version:** 1.1.0 (Phase 2)  
+**Current Version:** 1.1.2 (Phase 2)  
 **Status:** Production Ready ✅  
 **Languages:** 4 (JavaScript/TypeScript, Python, Go, CSS)  
 **Active Development:** Yes  
 **Last Updated:** November 2025
-
----
-
-<div align="center">
-
-**Made with ❤️ for developers who value their time**
-
-[⬆ Back to Top](#-linker)
-
-</div>
-
-**Benefits:**
-- ✅ Preserves git file history
-- ✅ Auto-stages modified files
-- ✅ Works seamlessly with git workflows
-- ✅ Better handling of merge conflicts
-
-### Exclude Patterns
-
-Skip unnecessary directories to improve performance:
-
-```json
-{
-  "linker.exclude": [
-    "**/node_modules/**",
-    "**/.git/**",
-    "**/dist/**",
-    "**/build/**",
-    "**/.next/**",
-    "**/coverage/**",
-    "**/__tests__/**",
-    "**/*.test.{js,ts,jsx,tsx}",
-    "**/*.spec.{js,ts,jsx,tsx}"
-  ]
-}
-```
 
 ---
 
@@ -652,6 +607,6 @@ If you find **Linker** useful, please consider:
 
 **Made with ❤️ for the developer community**
 
-**Version 1.0.0** | [⬆ Back to Top](#-linker)
+**Version 1.1.3** | [⬆ Back to Top](#-linker)
 
 </div>
