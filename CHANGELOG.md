@@ -7,6 +7,69 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.3] - 2025-11-21
+
+### 📝 Documentation Cleanup Release
+
+#### 📚 Documentation Updates
+- **Removed Non-Existent Documentation References**: Cleaned up README.md to remove references to:
+  - `MULTI-LANGUAGE-TESTING-GUIDE.md` (file doesn't exist)
+  - `LARGE-CODEBASE-GUIDE.md` (file doesn't exist)
+- **Removed Duplicate Content**: Eliminated duplicate sections in README.md:
+  - Removed duplicate Project Status section
+  - Removed misplaced Git benefits and Exclude Patterns sections
+- **Streamlined README**: More focused and accurate documentation without broken links
+
+#### 🎯 Purpose
+This is a maintenance release to clean up documentation and provide accurate information to users. No functional changes to the extension.
+
+---
+
+## [1.1.2] - 2025-11-21
+
+### 🎯 Production Release - Go Language Support Enhanced
+
+#### ✨ New Features
+- **Go Package Declaration Updates**: Automatically updates `package` declarations in Go files when folders are renamed
+- **Nested Folder Rename Support**: Properly handles complex folder moves (e.g., `internal/utils` → `internal/common/utils`)
+- **Path Segment Matching**: Intelligent import path replacement for nested folder structures
+- **Auto-Apply Toggle**: Changed default `linker.autoApply` to `false` for better user experience (shows preview by default)
+
+#### 🐛 Bug Fixes
+- **Fixed Go Import Updates**: Resolved issue where VS Code's Go extension reverted Linker's import changes
+- **Fixed Duplicate Work**: Prevented `onDidRenameFiles` from re-scanning when `autoApply` is enabled
+- **Fixed Nested Folder Moves**: Corrected import path replacement for multi-level folder relocations
+- **Fixed Package Declaration Logic**: Now properly updates Go package declarations when folder contains files
+
+#### 🔧 Technical Improvements
+- Added `updateGoPackageDeclaration()` method to handle Go-specific package name updates
+- Improved folder rename detection using full path segments instead of just folder names
+- Enhanced concurrency handling for large Go projects
+- Better separation between files inside and outside renamed folders
+
+#### 🗑️ Removed Features
+- **Removed Java Support**: Completely removed Java language support due to fundamental limitations
+  - Java support only updated imports, not class references in code (variables, parameters, etc.)
+  - Would require full AST parsing and semantic analysis (duplicates language server functionality)
+  - Removed `javaAliasResolver.ts`, Java scanning logic, Java configuration, and Java documentation
+
+#### 📚 Documentation Updates
+- Updated README.md to reflect 4 supported languages (removed Java)
+- Updated USER_GUIDE.md with accurate language list and examples
+- All documentation now correctly shows: JavaScript/TypeScript, Python, Go, and CSS/SCSS/LESS
+
+#### 🔒 Git Integration
+- Enhanced `git mv` support with `linker.git.useGitMv` setting (default: true)
+- Optional auto-staging with `linker.git.autoStage` setting (default: false)
+- Better handling of tracked vs untracked files
+
+#### ⚙️ Configuration Changes
+- Changed `linker.autoApply` default from `true` to `false`
+- Users now see preview dialog by default
+- Can still enable auto-apply for Python projects to prevent Pylance conflicts
+
+---
+
 ## [1.3.1] - 2025-11-19
 
 ### 🐛 Critical Fix: Pylance Conflict Resolution
