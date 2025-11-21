@@ -24,10 +24,9 @@ export class ImportFormatter {
      * Format an import path with the configured quote style
      */
     public formatImportPath(originalImport: string, newPath: string, fileContent?: string): string {
-        // Check if this is a Java import (no quotes, ends with semicolon)
-        if (this.isJavaImport(originalImport)) {
-            return this.formatJavaImport(originalImport, newPath);
-        }
+        console.log('Linker [formatImportPath]: CALLED');
+        console.log('Linker [formatImportPath]: originalImport =', JSON.stringify(originalImport));
+        console.log('Linker [formatImportPath]: newPath =', JSON.stringify(newPath));
 
         // Check if this is a Go import (has "package/path" in quotes)
         if (this.isGoImport(originalImport)) {
@@ -78,33 +77,6 @@ export class ImportFormatter {
         if (match) {
             const [, prefix, openQuote, oldPath, suffix] = match;
             return `${prefix}${openQuote}${newPath}${suffix}`;
-        }
-
-        // Fallback - shouldn't happen
-        return originalImport;
-    }
-
-    /**
-     * Check if this is a Java import statement
-     */
-    private isJavaImport(importStatement: string): boolean {
-        // Java imports: import [static] package.Class[.method];
-        return /^\s*import\s+(?:static\s+)?[\w.]+\s*;/.test(importStatement);
-    }
-
-    /**
-     * Format Java import statement
-     */
-    private formatJavaImport(originalImport: string, newPath: string): string {
-        // Java imports can be:
-        // 1. Regular: import com.example.utils.Helpers;
-        // 2. Static: import static com.example.utils.Helpers.doSomething;
-
-        // Match: import [static] package.path;
-        const match = originalImport.match(/^(\s*import\s+(?:static\s+)?)([\w.]+)(\s*;.*)$/);
-        if (match) {
-            const [, prefix, oldPath, suffix] = match;
-            return `${prefix}${newPath}${suffix}`;
         }
 
         // Fallback - shouldn't happen
@@ -199,13 +171,24 @@ export class ImportFormatter {
      * Build formatted import with new path
      */
     private buildFormattedImport(originalImport: string, newPath: string, quote: string): string {
+        console.log('Linker [buildFormattedImport]: originalImport =', originalImport);
+        console.log('Linker [buildFormattedImport]: newPath =', newPath);
+        console.log('Linker [buildFormattedImport]: quote =', quote);
+
         // Extract the parts of the import - Match opening and closing quotes separately
         // Use non-greedy match and ensure we capture content AFTER closing quote (not including it)
         const importMatch = originalImport.match(/^(\s*)(import\s+.*?from\s+)['"](.+?)['"](.*)$/);
         if (importMatch) {
             const [fullMatch, indent, importPart, oldPath, afterClosingQuote] = importMatch;
+            console.log('Linker [buildFormattedImport]: Matched import statement');
+            console.log('Linker [buildFormattedImport]: indent =', JSON.stringify(indent));
+            console.log('Linker [buildFormattedImport]: importPart =', JSON.stringify(importPart));
+            console.log('Linker [buildFormattedImport]: oldPath =', oldPath);
+            console.log('Linker [buildFormattedImport]: afterClosingQuote =', JSON.stringify(afterClosingQuote));
+
             // afterClosingQuote is everything AFTER the closing quote (;, semicolon, etc.)
             const result = `${indent}${importPart}${quote}${newPath}${quote}${afterClosingQuote}`;
+            console.log('Linker [buildFormattedImport]: result =', result);
             return result;
         }
 
