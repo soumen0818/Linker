@@ -117,6 +117,7 @@ export class ImportScanner {
 
     /**
      * Check if an import matches a renamed file
+     * Now supports TypeScript path aliases (@/, ~/, etc.)
      */
     static doesImportMatchFile(
         importMatch: ImportMatch,
@@ -126,7 +127,25 @@ export class ImportScanner {
     ): boolean {
         const { importPath } = importMatch;
 
-        // Skip non-relative imports (like 'react', 'lodash', etc.)
+        // Check if it's a path alias (starts with @, ~, or other configured aliases)
+        const isAlias = !importPath.startsWith('.') && !importPath.startsWith('/') &&
+            (importPath.startsWith('@/') || importPath.startsWith('~/') || importPath.includes('/'));
+
+        if (isAlias) {
+            // Extract the file name from the alias path
+            // "@/components/Footer" -> "Footer"
+            const aliasFileName = path.posix.basename(importPath).replace(/\.(js|ts|jsx|tsx|mjs|cjs)$/, '');
+
+            console.log(`Linker [doesImportMatchFile]: Alias import "${importPath}", extracting filename: "${aliasFileName}"`);
+            console.log(`Linker [doesImportMatchFile]: Comparing "${aliasFileName}" with "${oldFileName}"`);
+
+            const matches = aliasFileName === oldFileName;
+            console.log(`Linker [doesImportMatchFile]: Alias match result = ${matches}`);
+
+            return matches;
+        }
+
+        // Skip non-relative imports (like 'react', 'lodash', etc.) - these are npm packages
         if (!importPath.startsWith('.') && !importPath.startsWith('/')) {
             console.log(`Linker [doesImportMatchFile]: "${importPath}" is not relative, skipping`);
             return false;
