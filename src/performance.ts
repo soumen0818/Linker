@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 
 /**
  * Cache entry for file content
@@ -7,6 +8,109 @@ interface CacheEntry {
     content: string;
     version: number;
     timestamp: number;
+}
+
+/**
+ * Workspace size analysis result
+ */
+export interface WorkspaceAnalysis {
+    totalFiles: number;
+    estimatedRelevantFiles: number;
+    isLargeCodebase: boolean;
+    recommendedConcurrency: number;
+}
+
+/**
+ * Analyzes workspace size and recommends optimizations
+ */
+export class WorkspaceAnalyzer {
+    /**
+     * Analyze workspace to determine if it's a large codebase
+     */
+    static async analyzeWorkspace(excludePatterns: string[]): Promise<WorkspaceAnalysis> {
+        try {
+            const exPattern = '{' + excludePatterns.join(',') + '}';
+
+            // Quick sample - just count relevant files
+            const jsFiles = await vscode.workspace.findFiles('**/*.{js,ts,jsx,tsx,mjs,cjs}', exPattern, 1000);
+            const pyFiles = await vscode.workspace.findFiles('**/*.py', exPattern, 500);
+
+            const sampleCount = jsFiles.length + pyFiles.length;
+            const isLargeCodebase = sampleCount >= 1000; // Hit the limit
+
+            // Estimate total by extrapolation
+            const estimatedTotal = isLargeCodebase ? sampleCount * 2 : sampleCount;
+
+            // Recommend concurrency based on size
+            let recommendedConcurrency = 20;
+            if (isLargeCodebase) {
+                if (estimatedTotal > 5000) {
+                    recommendedConcurrency = 10; // Very large - use low concurrency
+                } else {
+                    recommendedConcurrency = 15; // Large - use medium concurrency
+                }
+            }
+
+            // Warn if workspace is extremely large
+            if (estimatedTotal > 20000) {
+                vscode.window.showWarningMessage(
+                    `Linker: Very large workspace detected (~${estimatedTotal} files). ` +
+                    `Performance may be impacted. Consider excluding more directories or using workspace-specific settings.`,
+                    'Configure Settings',
+                    'Dismiss'
+                ).then(action => {
+                    if (action === 'Configure Settings') {
+                        vscode.commands.executeCommand('workbench.action.openSettings', 'linker');
+                    }
+                });
+            }
+
+            return {
+                totalFiles: estimatedTotal,
+                estimatedRelevantFiles: sampleCount,
+                isLargeCodebase,
+                recommendedConcurrency
+            };
+        } catch (error) {
+            console.error('Linker: Failed to analyze workspace', error);
+            return {
+                totalFiles: 0,
+                estimatedRelevantFiles: 0,
+                isLargeCodebase: false,
+                recommendedConcurrency: 20
+            };
+        }
+    }
+}
+
+/**
+ * Timeout wrapper for operations
+ */
+export class TimeoutHandler {
+    /**
+     * Run operation with timeout
+     */
+    static async withTimeout<T>(
+        operation: () => Promise<T>,
+        timeoutMs: number,
+        errorMessage: string = 'Operation timed out'
+    ): Promise<T> {
+        return new Promise<T>((resolve, reject) => {
+            const timer = setTimeout(() => {
+                reject(new Error(errorMessage));
+            }, timeoutMs);
+
+            operation()
+                .then(result => {
+                    clearTimeout(timer);
+                    resolve(result);
+                })
+                .catch(error => {
+                    clearTimeout(timer);
+                    reject(error);
+                });
+        });
+    }
 }
 
 /**
@@ -196,30 +300,58 @@ export class BatchProcessor {
     }
 
     /**
-     * Process items with concurrency limit
+     * Process items with concurrency limit and cancellation support
      */
     static async processWithLimit<T, R>(
         items: T[],
         processor: (item: T) => Promise<R>,
-        limit: number = 10
+        limit: number = 10,
+        cancellationToken?: vscode.CancellationToken
     ): Promise<R[]> {
         const results: R[] = [];
-        const executing: Promise<void>[] = [];
+        const executing: Map<Promise<void>, boolean> = new Map();
 
-        for (const item of items) {
-            const promise = processor(item).then(result => {
-                results.push(result);
-            });
+        for (let i = 0; i < items.length; i++) {
+            // Check for cancellation
+            if (cancellationToken?.isCancellationRequested) {
+                console.log(`Linker: Operation cancelled at item ${i}/${items.length}`);
+                break;
+            }
 
-            executing.push(promise);
+            const item = items[i];
+            const promise = processor(item)
+                .then(result => {
+                    results.push(result);
+                })
+                .catch(error => {
+                    console.warn(`Linker: Error processing item:`, error);
+                    // Continue processing other items
+                })
+                .finally(() => {
+                    executing.delete(promise);
+                });
 
-            if (executing.length >= limit) {
-                await Promise.race(executing);
-                executing.splice(executing.findIndex(p => p === promise), 1);
+            executing.set(promise, true);
+
+            if (executing.size >= limit) {
+                await Promise.race(Array.from(executing.keys()));
             }
         }
 
-        await Promise.all(executing);
+        await Promise.all(Array.from(executing.keys()));
         return results;
+    }
+
+    /**
+     * Check if a file should be processed based on size
+     */
+    static async shouldProcessFile(uri: vscode.Uri, maxSizeBytes: number): Promise<boolean> {
+        try {
+            const stat = await vscode.workspace.fs.stat(uri);
+            return stat.size <= maxSizeBytes;
+        } catch (error) {
+            console.warn(`Linker: Could not stat file ${uri.fsPath}:`, error);
+            return false; // Skip files we can't stat
+        }
     }
 }
