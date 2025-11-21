@@ -2,7 +2,7 @@
 
 **Complete documentation for the Linker VS Code extension**
 
-Version 1.1.0 (Phase 2) | Last Updated: November 2025
+Version 1.1.2 (Phase 2) | Last Updated: November 2025
 
 ---
 
@@ -833,4 +833,4 @@ If Linker helps you:
 
 **Happy Coding! 🎉**
 
-*Last updated: November 2025 | Version 1.1.0 (Phase 2)*
+*Last updated: November 2025 | Version 1.1.3 (Phase 2)*
