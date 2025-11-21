@@ -18,11 +18,6 @@ export class MultiLanguageScanner {
                     return this.scanPython(document);
                 }
                 break;
-            case 'java':
-                if (config.get<boolean>('multiLanguage.java', true)) {
-                    return this.scanJava(document);
-                }
-                break;
             case 'go':
                 if (config.get<boolean>('multiLanguage.go', true)) {
                     return this.scanGo(document);
@@ -87,49 +82,6 @@ export class MultiLanguageScanner {
 
                 imports.push({
                     importPath: modulePath,
-                    line: lineIndex,
-                    startColumn: pathStart,
-                    endColumn: pathEnd,
-                    type: 'import',
-                    quote: ''
-                });
-            }
-        }
-
-        return imports;
-    }
-
-    /**
-     * Scan Java imports
-     * Supports: import package.Class;
-     * Supports: import static package.Class.method;
-     */
-    private static scanJava(document: vscode.TextDocument): ImportMatch[] {
-        const imports: ImportMatch[] = [];
-        const lineCount = document.lineCount;
-
-        for (let lineIndex = 0; lineIndex < lineCount; lineIndex++) {
-            const line = document.lineAt(lineIndex);
-            const lineText = line.text;
-
-            // Skip comments and empty lines
-            if (this.isJavaComment(lineText)) {
-                continue;
-            }
-
-            // Pattern: import [static] package.Class[.method];
-            // Captures the package path WITHOUT the "static" keyword
-            const importPattern = /import\s+(?:static\s+)?([\w.]+)\s*;/g;
-            let match: RegExpExecArray | null;
-
-            while ((match = importPattern.exec(lineText)) !== null) {
-                const packagePath = match[1];
-                const matchStart = match.index;
-                const pathStart = matchStart + match[0].indexOf(packagePath);
-                const pathEnd = pathStart + packagePath.length;
-
-                imports.push({
-                    importPath: packagePath,
                     line: lineIndex,
                     startColumn: pathStart,
                     endColumn: pathEnd,
@@ -297,15 +249,6 @@ export class MultiLanguageScanner {
     }
 
     /**
-     * Check if line is Java comment
-     */
-    private static isJavaComment(line: string): boolean {
-        const trimmed = line.trim();
-        return trimmed.startsWith('//') || trimmed.startsWith('/*') ||
-            trimmed.startsWith('*') || trimmed.length === 0;
-    }
-
-    /**
      * Check if line is Go comment
      */
     private static isGoComment(line: string): boolean {
@@ -340,24 +283,9 @@ export class MultiLanguageScanner {
     }
 
     /**
-     * Convert Java package to path
-     * e.g., "com.example.Class" -> "com/example/Class"
-     */
-    static javaPackageToPath(packagePath: string): string {
-        return packagePath.replace(/\./g, '/');
-    }
-
-    /**
-     * Convert path to Java package
-     * e.g., "com/example/Class" -> "com.example.Class"
-     */
-    static pathToJavaPackage(filePath: string): string {
-        return filePath.replace(/\//g, '.').replace(/\\/g, '.');
-    }
-
-    /**
      * Check if a Python import matches a renamed file
      * Python imports use dot notation: from utils.helpers import x
+     * Now supports alias detection: @.models, @utils.helpers
      */
     static doesPythonImportMatchFile(
         importPath: string,
@@ -367,11 +295,13 @@ export class MultiLanguageScanner {
         // 1. "utils.helpers" - module path
         // 2. ".helpers" - relative import from same directory
         // 3. "..utils.helpers" - relative import from parent directory
+        // 4. "@.models.user" - alias import (new feature)
 
         // Extract the module name from the import path
         // For "utils.helpers" -> "helpers"
         // For ".helpers" -> "helpers"
         // For "..utils.helpers" -> "helpers"
+        // For "@.models.user" -> "user"
 
         const parts = importPath.split('.');
         const moduleName = parts[parts.length - 1];
@@ -385,48 +315,9 @@ export class MultiLanguageScanner {
     }
 
     /**
-     * Check if a Java import matches a renamed file
-     * Java imports use package notation: import com.example.utils.Helpers;
-     * Also supports static imports: import static com.example.utils.Helpers.doSomething;
-     */
-    static doesJavaImportMatchFile(
-        importPath: string,
-        oldFileName: string
-    ): boolean {
-        // Java imports can be:
-        // 1. Regular: "com.example.utils.Helpers" - class name is last part
-        // 2. Static: "com.example.utils.Helpers.doSomething" - class name is second to last part
-
-        const parts = importPath.split('.');
-        const fileNameWithoutExt = oldFileName.replace(/\.java$/, '');
-
-        // Check if this could be a static import (has method/field name after class)
-        // Try matching the last part (for regular imports) OR second-to-last part (for static imports)
-        const lastPart = parts[parts.length - 1];
-        const secondToLastPart = parts.length > 1 ? parts[parts.length - 2] : '';
-
-        console.log(`Linker [Java Match]: Checking "${importPath}"`);
-        console.log(`Linker [Java Match]: Last part: "${lastPart}", Second-to-last: "${secondToLastPart}", File: "${fileNameWithoutExt}"`);
-
-        // Try matching last part first (regular import)
-        if (lastPart === fileNameWithoutExt) {
-            console.log(`Linker [Java Match]: ✓ Matched as regular import`);
-            return true;
-        }
-
-        // Try matching second-to-last part (static import)
-        if (secondToLastPart === fileNameWithoutExt) {
-            console.log(`Linker [Java Match]: ✓ Matched as static import`);
-            return true;
-        }
-
-        console.log(`Linker [Java Match]: ✗ No match`);
-        return false;
-    }
-
-    /**
      * Check if a Go import matches a renamed file
      * Go imports use package paths: import "github.com/user/project/utils"
+     * Supports module-relative aliases
      */
     static doesGoImportMatchFile(
         importPath: string,
@@ -449,6 +340,7 @@ export class MultiLanguageScanner {
     /**
      * Check if a CSS import matches a renamed file
      * CSS imports: @import "partials/variables.css" or @import "./partials/variables.css"
+     * Supports path aliases like @styles, @assets
      */
     static doesCSSImportMatchFile(
         importPath: string,
@@ -458,6 +350,7 @@ export class MultiLanguageScanner {
         // 1. "partials/variables.css" - relative without ./
         // 2. "./partials/variables.css" - relative with ./
         // 3. "../partials/variables.css" - relative with ../
+        // 4. "@styles/variables.css" - alias import (new feature)
 
         // Extract just the filename from the path
         const parts = importPath.split('/');
