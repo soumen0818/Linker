@@ -118,4 +118,39 @@ export class GitIntegration {
         }
         return successCount;
     }
+
+    /**
+     * Record a rename that has already happened on disk
+     * Git will auto-detect the rename if we stage both the deletion and addition
+     */
+    async recordRename(oldPath: string, newPath: string): Promise<boolean> {
+        if (!this.isGitRepo || !this.workspaceRoot) {
+            console.log('Git recordRename: Not a git repo or no workspace root');
+            return false;
+        }
+
+        try {
+            const oldRelative = path.relative(this.workspaceRoot, oldPath);
+            const newRelative = path.relative(this.workspaceRoot, newPath);
+
+            console.log(`Git recordRename: ${oldRelative} -> ${newRelative}`);
+
+            // First, add the new file
+            await execAsync(`git add "${newRelative}"`, {
+                cwd: this.workspaceRoot
+            });
+
+            // Then, stage the deletion by adding the old path (which no longer exists)
+            // The -u flag stages modifications and deletions, but not new files
+            await execAsync(`git add -u "${oldRelative}"`, {
+                cwd: this.workspaceRoot
+            });
+
+            console.log('Git recordRename: Successfully staged rename');
+            return true;
+        } catch (error) {
+            console.error('Git record rename failed:', error);
+            return false;
+        }
+    }
 }
