@@ -2,8 +2,8 @@
     "$schema": "https://json.schemastore.org/package",
     "name": "import-linker",
     "displayName": "Linker - Auto Import Updater",
-    "description": "Automatically updates import statements when you rename or move files and folders. Supports JavaScript, TypeScript, React, Python, Java, Go, and CSS with enhanced diff preview and undo/redo.",
-    "version": "1.1.1",
+    "description": "Automatically updates import statements when you rename or move files and folders. Supports JavaScript, TypeScript, React, Python, Go, and CSS with FULL ALIAS SUPPORT. Enhanced diff preview and undo/redo. Optimized for large codebases.",
+    "version": "1.3.1",
     "publisher": "linkerdev",
     "icon": "images/linker-logo.png",
     "repository": {
@@ -73,7 +73,17 @@
             "type": "object",
             "title": "Linker",
             "properties": {
-                "linker.autoStageChanges": {
+                "linker.autoApply": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Automatically apply import updates without showing preview dialog. When enabled, updates are applied atomically with file renames (prevents conflicts with Pylance). When disabled, shows preview for confirmation. Set to true for Python projects to prevent Pylance conflicts."
+                },
+                "linker.git.useGitMv": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Use git mv to preserve file history when renaming tracked files. When enabled, renames are recorded in Git as moves rather than delete+add operations."
+                },
+                "linker.git.autoStage": {
                     "type": "boolean",
                     "default": false,
                     "description": "Automatically stage files modified by Linker in Git"
@@ -82,9 +92,18 @@
                     "type": "array",
                     "default": [
                         "**/node_modules/**",
-                        "**/.git/**"
+                        "**/.git/**",
+                        "**/dist/**",
+                        "**/build/**",
+                        "**/out/**",
+                        "**/.next/**",
+                        "**/coverage/**",
+                        "**/vendor/**",
+                        "**/*.min.js",
+                        "**/*.min.css",
+                        "**/*.bundle.js"
                     ],
-                    "description": "Glob patterns to exclude from scanning"
+                    "description": "Glob patterns to exclude from scanning (add more directories to improve performance)"
                 },
                 "linker.fileExtensions": {
                     "type": "array",
@@ -94,7 +113,6 @@
                         "jsx",
                         "tsx",
                         "py",
-                        "java",
                         "go",
                         "css",
                         "scss",
@@ -151,20 +169,70 @@
                     "default": true,
                     "description": "Enable Python import detection and updates"
                 },
-                "linker.multiLanguage.java": {
+                "linker.multiLanguage.python.aliasSupport": {
                     "type": "boolean",
                     "default": true,
-                    "description": "Enable Java import detection and updates"
+                    "description": "Enable Python path alias support (reads from pyproject.toml and auto-detects common structures)"
                 },
                 "linker.multiLanguage.go": {
                     "type": "boolean",
                     "default": true,
                     "description": "Enable Go import detection and updates"
                 },
+                "linker.multiLanguage.go.aliasSupport": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable Go module alias support (reads from go.mod for module paths and replace directives)"
+                },
                 "linker.multiLanguage.css": {
                     "type": "boolean",
                     "default": true,
                     "description": "Enable CSS/SCSS/LESS @import detection and updates"
+                },
+                "linker.multiLanguage.css.aliasSupport": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable CSS path alias support (reads from webpack.config.js, vite.config.js for @ and ~ aliases)"
+                },
+                "linker.performance.largeCodebaseMode": {
+                    "type": "string",
+                    "enum": [
+                        "auto",
+                        "enabled",
+                        "disabled"
+                    ],
+                    "default": "auto",
+                    "description": "Enable optimizations for large codebases: auto-detect, always enabled, or disabled"
+                },
+                "linker.performance.maxFilesToScan": {
+                    "type": "number",
+                    "default": 10000,
+                    "description": "Maximum number of files to scan in large codebases (prevents excessive scanning)"
+                },
+                "linker.performance.maxConcurrentFiles": {
+                    "type": "number",
+                    "default": 20,
+                    "description": "Maximum number of files to process concurrently (lower for large codebases, increase to 50 for small projects)"
+                },
+                "linker.performance.maxFileSizeBytes": {
+                    "type": "number",
+                    "default": 1048576,
+                    "description": "Maximum file size to process in bytes (default 1MB, prevents processing huge files)"
+                },
+                "linker.performance.operationTimeoutMs": {
+                    "type": "number",
+                    "default": 60000,
+                    "description": "Maximum time in milliseconds for rename operations (default 60 seconds)"
+                },
+                "linker.performance.smartScanning": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable smart scanning that limits file count and skips large files"
+                },
+                "linker.performance.debounceMs": {
+                    "type": "number",
+                    "default": 300,
+                    "description": "Debounce delay in milliseconds for file rename events"
                 }
             }
         }
