@@ -60,21 +60,19 @@ Linker has reached Phase 2 with enterprise-grade features for professional devel
 #### 🌐 **Multi-Language Support**
 - **JavaScript/TypeScript** — ES6 imports, CommonJS require, dynamic imports
 - **Python** — `import` and `from...import` statements with dot notation
-- **Java** — Package imports and static imports
 - **Go** — Single and block import statements
 - **CSS/SCSS/LESS** — `@import` and `@import url()` statements
 
 #### 🎨 **Advanced Path Resolution**
 - **TypeScript/JavaScript path aliases** — `@/`, `~/`, custom tsconfig.json paths
 - **Python path aliases** — Auto-detects src/, app/, lib/ structures, pyproject.toml support
-- **Java package resolution** — Maven pom.xml, Gradle build.gradle source roots
 - **Go module paths** — go.mod module paths and replace directives
 - **CSS build tool aliases** — webpack, vite, parcel `@` and `~` aliases
 - Relative imports (`./`, `../`)
 - Absolute imports
 - Nested folder structures
 
-> **🎯 USP:** Only extension with **full alias support across ALL 5 languages!**
+> **🎯 USP:** Only extension with **full alias support across ALL 4 languages!**
 
 #### ⚡ **Performance Optimized**
 - **Production-ready for large codebases** — Handles 50,000+ files
@@ -192,17 +190,6 @@ from @.models.user import User  # ✅ Alias support!
 
 **Alias Support:** Auto-detects `src/`, `app/`, `lib/` directories, or reads `pyproject.toml`
 
-### Java
-```java
-// Package imports
-import com.example.utils.Helper;
-
-// Static imports
-import static com.example.utils.Helper.doSomething;
-```
-
-**Alias Support:** Reads Maven `pom.xml` and Gradle `build.gradle` for source roots
-
 ### Go
 ```go
 // Single imports
@@ -260,8 +247,6 @@ Linker works out-of-the-box with smart defaults. Customize via VS Code Settings 
   // Language toggles
   "linker.multiLanguage.python": true,
   "linker.multiLanguage.python.aliasSupport": true,  // NEW!
-  "linker.multiLanguage.java": true,
-  "linker.multiLanguage.java.aliasSupport": true,    // NEW!
   "linker.multiLanguage.go": true,
   "linker.multiLanguage.go.aliasSupport": true,      // NEW!
   "linker.multiLanguage.css": true,
@@ -292,7 +277,7 @@ Linker works out-of-the-box with smart defaults. Customize via VS Code Settings 
 
 ## 🎯 Multi-Language Alias Support
 
-**NEW in v1.3.0:** Linker now supports path aliases across ALL 5 languages!
+**NEW in v1.3.0:** Linker now supports path aliases across ALL 4 languages!
 
 ### TypeScript/JavaScript Aliases
 
@@ -331,18 +316,6 @@ utils = "src/utils"
 ```python
 from @.models.user import User  # Before rename
 from @.models.account import User  # After rename ✅
-```
-
-### Java Aliases
-
-**Configuration:** `pom.xml` or `build.gradle`
-
-Linker automatically reads your Maven/Gradle source directories.
-
-**Example:**
-```java
-import com.example.models.User;  // Before rename
-import com.example.models.Account;  // After rename ✅
 ```
 
 ### Go Aliases
@@ -437,21 +410,7 @@ from utils.helpers import format_date
 from utils.utilities import format_date  # ✅ Updated!
 ```
 
-### Example 4: Java Package Imports
-
-**Scenario:** Rename `Helper.java` → `Utility.java`
-
-```java
-// Before
-import com.example.utils.Helper;
-import static com.example.utils.Helper.doSomething;
-
-// After (Linker auto-updates)
-import com.example.utils.Utility;  // ✅ Updated!
-import static com.example.utils.Utility.doSomething;  // ✅ Updated!
-```
-
-### Example 5: CSS Imports
+### Example 4: CSS Imports
 
 **Scenario:** Rename `variables.css` → `vars.css`
 
@@ -508,7 +467,7 @@ If Linker saves you time, please:
 
 **Current Version:** 1.1.0 (Phase 2)  
 **Status:** Production Ready ✅  
-**Languages:** 5 (JavaScript/TypeScript, Python, Java, Go, CSS)  
+**Languages:** 4 (JavaScript/TypeScript, Python, Go, CSS)  
 **Active Development:** Yes  
 **Last Updated:** November 2025
 
