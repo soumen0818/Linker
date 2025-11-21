@@ -23,7 +23,19 @@ export class LinkerConfig {
      * Get glob patterns to exclude from scanning
      */
     getExcludePatterns(): string[] {
-        return this.config.get('exclude', ['**/node_modules/**', '**/.git/**', '**/dist/**', '**/build/**']);
+        return this.config.get('exclude', [
+            '**/node_modules/**',
+            '**/.git/**',
+            '**/dist/**',
+            '**/build/**',
+            '**/out/**',
+            '**/.next/**',
+            '**/coverage/**',
+            '**/vendor/**',
+            '**/*.min.js',
+            '**/*.min.css',
+            '**/*.bundle.js'
+        ]);
     }
 
     /**
@@ -33,7 +45,6 @@ export class LinkerConfig {
         return this.config.get('fileExtensions', [
             'js', 'ts', 'jsx', 'tsx', 'mjs', 'cjs',  // JavaScript/TypeScript
             'py',                                      // Python
-            'java',                                    // Java
             'go',                                      // Go
             'css', 'scss', 'less'                     // CSS
         ]);
@@ -54,6 +65,15 @@ export class LinkerConfig {
     }
 
     /**
+     * Get whether to auto-apply import updates without preview
+     * When true, updates are applied atomically with the rename (faster, prevents conflicts)
+     * When false, shows preview dialog for confirmation (safer, more control)
+     */
+    autoApply(): boolean {
+        return this.config.get('autoApply', true);
+    }
+
+    /**
      * Get whether to show progress notifications
      */
     showProgress(): boolean {
@@ -64,7 +84,7 @@ export class LinkerConfig {
      * Get maximum number of files to process concurrently
      */
     getMaxConcurrentFiles(): number {
-        return this.config.get('performance.maxConcurrentFiles', 50);
+        return this.config.get('performance.maxConcurrentFiles', 20);
     }
 
     /**
@@ -72,5 +92,41 @@ export class LinkerConfig {
      */
     getDebounceDelay(): number {
         return this.config.get('performance.debounceMs', 300);
+    }
+
+    /**
+     * Get maximum number of files to scan (for large codebases)
+     */
+    getMaxFilesToScan(): number {
+        return this.config.get('performance.maxFilesToScan', 10000);
+    }
+
+    /**
+     * Get operation timeout in milliseconds
+     */
+    getOperationTimeout(): number {
+        return this.config.get('performance.operationTimeoutMs', 60000);
+    }
+
+    /**
+     * Get maximum file size to process in bytes (default 1MB)
+     */
+    getMaxFileSize(): number {
+        return this.config.get('performance.maxFileSizeBytes', 1048576);
+    }
+
+    /**
+     * Check if smart scanning is enabled (only scan relevant files)
+     */
+    isSmartScanningEnabled(): boolean {
+        return this.config.get('performance.smartScanning', true);
+    }
+
+    /**
+     * Get whether to enable large codebase optimizations
+     */
+    enableLargeCodebaseOptimizations(): boolean {
+        const mode = this.config.get<string>('performance.largeCodebaseMode', 'auto');
+        return mode !== 'disabled';
     }
 }
