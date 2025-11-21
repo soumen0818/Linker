@@ -31,7 +31,7 @@ Linker is an intelligent VS Code extension that automatically updates import sta
 
 - **Save Time:** No more manually finding and updating imports
 - **Prevent Errors:** Avoid broken imports during refactoring
-- **Multi-Language:** Works with JavaScript, TypeScript, Python, Java, Go, and CSS
+- **Multi-Language:** Works with JavaScript, TypeScript, Python, Go, and CSS
 - **Visual Preview:** See all changes before applying them
 - **Undo/Redo:** Full history tracking with easy reversion
 - **Git Integration:** Seamlessly works with your Git workflow
@@ -203,29 +203,6 @@ from utils import helper as h
 **Important Notes:**
 - Linker preserves relative vs. absolute import style
 - Dot notation is automatically converted (e.g., `utils/helpers.py` → `utils.helpers`)
-
----
-
-### Java
-
-**Supported Import Patterns:**
-
-```java
-// Package imports
-import com.example.utils.Helper;
-import com.example.utils.*;
-
-// Static imports
-import static com.example.utils.Helper.doSomething;
-import static com.example.utils.Constants.*;
-```
-
-**File Extensions:** `.java`
-
-**Important Notes:**
-- Linker updates both regular and static imports
-- Package notation is preserved (e.g., `com.example.utils.Helper`)
-- Only the class name is updated, not the package path
 
 ---
 
@@ -467,7 +444,6 @@ src/
 
 - **JavaScript/TypeScript:** Updates relative paths
 - **Python:** Updates module paths (dot notation)
-- **Java:** Updates package names
 - **Go:** Updates package import paths
 - **CSS:** Updates @import paths
 
@@ -520,7 +496,6 @@ Or edit `settings.json` directly (`Ctrl+,` → click `{}` icon)
   "linker.fileExtensions": [
     "js", "ts", "jsx", "tsx", "mjs", "cjs",  // JavaScript/TypeScript
     "py",                                      // Python
-    "java",                                    // Java
     "go",                                      // Go
     "css", "scss", "less"                     // CSS
   ],
@@ -579,7 +554,6 @@ Or edit `settings.json` directly (`Ctrl+,` → click `{}` icon)
 {
   // Enable/disable specific language support
   "linker.multiLanguage.python": true,
-  "linker.multiLanguage.java": true,
   "linker.multiLanguage.go": true,
   "linker.multiLanguage.css": true
 }
@@ -617,29 +591,17 @@ Or edit `settings.json` directly (`Ctrl+,` → click `{}` icon)
 }
 ```
 
-#### For Java Projects
-
-```json
-{
-  "linker.fileExtensions": ["java"],
-  "linker.exclude": ["**/target/**", "**/bin/**", "**/.class"],
-  "linker.multiLanguage.java": true
-}
-```
-
 #### For Multi-Language Projects
 
 ```json
 {
-  "linker.fileExtensions": ["js", "ts", "py", "java", "go", "css"],
+  "linker.fileExtensions": ["js", "ts", "py", "go", "css"],
   "linker.exclude": [
     "**/node_modules/**",
     "**/__pycache__/**",
-    "**/target/**",
     "**/dist/**"
   ],
   "linker.multiLanguage.python": true,
-  "linker.multiLanguage.java": true,
   "linker.multiLanguage.go": true,
   "linker.multiLanguage.css": true
 }
@@ -823,7 +785,7 @@ A: Yes, use `Ctrl+Alt+Z` or the undo command.
 ### Technical Questions
 
 **Q: What languages are supported?**  
-A: JavaScript, TypeScript, Python, Java, Go, CSS/SCSS/LESS.
+A: JavaScript, TypeScript, Python, Go, CSS/SCSS/LESS.
 
 **Q: Does it work with TypeScript path aliases?**  
 A: Yes, Linker reads your `tsconfig.json` automatically.
