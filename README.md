@@ -31,7 +31,7 @@ If your project has **1,000+ files**, add these settings to `.vscode/settings.js
 }
 ```
 
-**Then reload VS Code**. See [EMERGENCY-FIX.md](EMERGENCY-FIX.md) for detailed setup.
+**Then reload VS Code**. 
 
 ---
 
