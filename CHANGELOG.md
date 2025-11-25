@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.4] - 2025-11-25
+
+### ⚙️ Configuration & Documentation Enhancement Release
+
+#### ✨ New Features
+- **Smart Settings Configuration**: Added user prompt on first activation to choose between Workspace or Global settings
+  - **Workspace Settings**: Creates `.vscode/settings.json` (recommended for team projects)
+  - **Global Settings**: No workspace folder created, applies to all projects
+  - **User Control**: Defaults to Global settings if prompt is dismissed
+- **Change Settings Preference Command**: New command `Linker: Change Settings Preference` allows users to switch between workspace and global settings anytime
+- **Flexible Configuration Flow**: Users decide if they want `.vscode` folder created in their projects
+
+#### 📚 Documentation Updates
+- **Official Website Added**: Added link to official site (https://linker-steel-xi.vercel.app/) in README
+- **Developer Profile**: Added developer information with LinkedIn and portfolio links
+- **Workspace Settings Guide**: New documentation file explaining configuration options (`Doc/WORKSPACE-SETTINGS-GUIDE.md`)
+- **Enhanced README**: Better organized with official website, developer attribution, and updated features list
+
+#### 🎯 Benefits
+- **No Forced Folders**: Extension no longer automatically creates `.vscode` folder without user consent
+- **Team-Friendly**: Teams can choose workspace settings for consistency across members
+- **Solo Developer Friendly**: Individual developers can use global settings for simplicity
+- **Better User Experience**: Clear explanation of options through modal dialog on first use
+
+#### 🔧 Technical Details
+- Preference stored in VS Code global state (persists across restarts and workspaces)
+- Automatic detection of existing preference on subsequent activations
+- Reload window prompt when changing settings preference
+
+---
+
 ## [1.1.3] - 2025-11-21
 
 ### 📝 Documentation Cleanup Release
