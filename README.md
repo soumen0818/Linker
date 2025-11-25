@@ -13,7 +13,7 @@
 
 **Never break imports again** — Automatically update all import statements when you rename or move files and folders.
 
-[Features](#-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [Languages](#-supported-languages) • [Configuration](#%EF%B8%8F-configuration) • [Documentation](#-documentation)
+[🌐 Official Website](https://linker-steel-xi.vercel.app/) | [Features](#-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [Languages](#-supported-languages) • [Configuration](#%EF%B8%8F-configuration) • [Documentation](#-documentation)
 
 </div>
 
@@ -90,6 +90,12 @@ Linker has reached Phase 2 with enterprise-grade features for professional devel
 - Automatic `git mv` for tracked files
 - Optional auto-staging of modified files
 - Works seamlessly with your Git workflow
+
+#### ⚙️ **Flexible Configuration**
+- **Choose your settings scope** — Workspace or Global settings
+- **First-time setup prompt** — Decide if you want `.vscode` folder created
+- **Change anytime** — Switch between workspace and global settings via command palette
+- **No forced folders** — Defaults to global settings if you dismiss the prompt
 
 ---
 
@@ -450,7 +456,7 @@ If Linker saves you time, please:
 
 ## 📊 Project Status
 
-**Current Version:** 1.1.3  
+**Current Version:** 1.1.4  
 **Status:** Production Ready ✅  
 **Languages:** 4 (JavaScript/TypeScript, Python, Go, CSS)  
 **Active Development:** Yes  
@@ -580,10 +586,17 @@ If you find **Linker** useful, please consider:
 
 ## 🔗 Links
 
+### Extension
+- **🌐 Official Website:** [linker-steel-xi.vercel.app](https://linker-steel-xi.vercel.app/)
 - **Marketplace:** [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=linkerdev.import-linker)
 - **Repository:** [GitHub](https://github.com/soumen0818/Linker)
 - **Issues:** [Report a Bug](https://github.com/soumen0818/Linker/issues)
 - **Changelog:** [View Releases](https://github.com/soumen0818/Linker/blob/main/CHANGELOG.md)
+
+### Developer
+- **👤 Developer:** [Soumen Das](https://www.soumendas.me/)
+- **💼 LinkedIn:** [Connect on LinkedIn](https://www.linkedin.com/in/soumen-das-76b867218/)
+- **🌐 Portfolio:** [soumendas.me](https://www.soumendas.me/)
 
 ---
 
@@ -591,6 +604,8 @@ If you find **Linker** useful, please consider:
 
 **Made with ❤️ for the developer community**
 
-**Version 1.1.3** | [⬆ Back to Top](#-linker)
+**Developed by [Soumen Das](https://www.soumendas.me/)** | [LinkedIn](https://www.linkedin.com/in/soumen-das-76b867218/)
+
+**Version 1.1.4** | [🌐 Official Site](https://linker-steel-xi.vercel.app/) | [⬆ Back to Top](#-linker)
 
 </div>
