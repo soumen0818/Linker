@@ -3,7 +3,7 @@
     "name": "import-linker",
     "displayName": "Linker - Auto Import Updater",
     "description": "Automatically updates import statements when you rename or move files and folders. Supports JavaScript, TypeScript, React, Python, Go, and CSS with FULL ALIAS SUPPORT. Enhanced diff preview and undo/redo. Optimized for large codebases.",
-    "version": "1.1.3",
+    "version": "1.1.4",
     "publisher": "linkerdev",
     "icon": "images/linker-logo.png",
     "repository": {
@@ -53,6 +53,10 @@
             {
                 "command": "linker.showHistory",
                 "title": "Linker: Show Change History"
+            },
+            {
+                "command": "linker.changeSettingsPreference",
+                "title": "Linker: Change Settings Preference (Workspace vs Global)"
             }
         ],
         "keybindings": [
