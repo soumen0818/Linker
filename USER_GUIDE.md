@@ -4,7 +4,7 @@
 
 **Professional Documentation for Intelligent Import Management**
 
-Version 1.1.5 | Last Updated: November 2025
+Version 1.1.6 | Last Updated: November 2025
 
 [Official Website](https://linker-steel-xi.vercel.app/) • [GitHub Repository](https://github.com/soumen0818/Linker) • [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=linkerdev.import-linker)
 
@@ -1739,4 +1739,4 @@ If Linker helps you:
 
 **Happy Coding! 🎉**
 
-*Last updated: November 2025 | Version 1.1.5 *
+*Last updated: November 2025 | Version 1.1.6 *
