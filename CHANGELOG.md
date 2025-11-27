@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.5] - 2025-11-27
+
+### 🎨 UI/UX Enhancement Release
+
+#### ✨ New Features & Improvements
+- **Redesigned Preview Page**: Completely revamped diff preview interface with modern, beautiful design
+  - **40% Less Vertical Space**: More compact layout showing more changes at once
+  - **Sticky Header**: Header stays visible while scrolling through changes
+  - **File Type Icons**: Visual indicators for different file types (📜 JS, 🐍 Python, 🎨 CSS, etc.)
+  - **Better Color Coding**: Enhanced visual distinction between before/after changes
+  - **Smooth Animations**: Polished hover effects and transitions
+
+#### 📱 Responsive Design
+- **Fully Responsive**: Preview page adapts perfectly to all screen sizes
+  - Desktop: Side-by-side layout with right arrow (→)
+  - Mobile/Tablet: Vertical layout with down arrow (↓)
+  - Arrow automatically changes direction based on screen size
+- **Touch-Friendly**: Optimized button sizes and spacing for mobile devices
+- **Multiple Breakpoints**: Tailored layouts for 1024px, 768px, and 480px screens
+
+#### 🎨 Visual Enhancements
+- **Modern Typography**: System fonts with proper hierarchy
+- **Gradient Backgrounds**: Subtle gradients for depth and visual appeal
+- **Compact Badges**: Clean status and count indicators
+- **Professional Polish**: Rounded corners, shadows, and smooth interactions
+- **Better Spacing**: Reduced gap between before/after from 12px to 8px
+
+#### 📚 Documentation Updates
+- **Demo Video**: Added demo video to README and repository
+- **Logo Enhancement**: Logo image added to README header
+- **Updated Links**: Official website and developer profile links throughout documentation
+
+---
+
 ## [1.1.4] - 2025-11-25
 
 ### ⚙️ Configuration & Documentation Enhancement Release
