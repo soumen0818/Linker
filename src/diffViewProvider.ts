@@ -181,113 +181,183 @@ export class DiffViewProvider {
         }
         
         body {
-            font-family: var(--vscode-font-family);
-            font-size: var(--vscode-font-size);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-size: 13px;
             color: var(--vscode-foreground);
             background-color: var(--vscode-editor-background);
-            padding: 10px;
+            padding: 0;
+            overflow-x: hidden;
         }
 
-        h2 {
-            margin-bottom: 15px;
-            color: var(--vscode-foreground);
-        }
-
+        /* Sticky Header */
         .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--vscode-editor-background);
+            border-bottom: 2px solid var(--vscode-panel-border);
+            padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--vscode-panel-border);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--vscode-foreground);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo {
+            font-size: 20px;
         }
 
         .stats {
-            color: var(--vscode-descriptionForeground);
-            font-size: 0.9em;
+            background: var(--vscode-badge-background);
+            color: var(--vscode-badge-foreground);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
         }
 
         .buttons {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
 
         button {
             background-color: var(--vscode-button-background);
             color: var(--vscode-button-foreground);
             border: none;
-            padding: 8px 16px;
+            padding: 8px 20px;
             cursor: pointer;
-            border-radius: 2px;
-            font-size: 13px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         button:hover {
             background-color: var(--vscode-button-hoverBackground);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
         }
 
         button.secondary {
-            background-color: var(--vscode-button-secondaryBackground);
-            color: var(--vscode-button-secondaryForeground);
+            background-color: transparent;
+            color: var(--vscode-foreground);
+            border: 1px solid var(--vscode-panel-border);
         }
 
         button.secondary:hover {
-            background-color: var(--vscode-button-secondaryHoverBackground);
+            background-color: var(--vscode-list-hoverBackground);
         }
 
+        /* Main Content */
         .diff-container {
-            margin-bottom: 20px;
+            padding: 16px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .diff-file {
-            background-color: var(--vscode-editor-inactiveSelectionBackground);
-            border-left: 3px solid var(--vscode-textLink-foreground);
-            margin-bottom: 15px;
-            border-radius: 3px;
+            background-color: var(--vscode-editorWidget-background);
+            border: 1px solid var(--vscode-panel-border);
+            border-radius: 6px;
+            margin-bottom: 12px;
             overflow: hidden;
+            transition: all 0.2s ease;
         }
 
+        .diff-file:hover {
+            border-color: var(--vscode-focusBorder);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Compact File Header */
         .file-header {
-            background-color: var(--vscode-sideBar-background);
-            padding: 10px;
-            font-weight: bold;
+            background: linear-gradient(135deg, var(--vscode-sideBar-background) 0%, var(--vscode-editor-background) 100%);
+            padding: 10px 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
+            border-bottom: 1px solid var(--vscode-panel-border);
         }
 
         .file-header:hover {
-            background-color: var(--vscode-list-hoverBackground);
+            background: var(--vscode-list-hoverBackground);
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .file-icon {
+            font-size: 16px;
         }
 
         .file-path {
             font-family: var(--vscode-editor-font-family);
-            font-size: 0.95em;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--vscode-textLink-foreground);
         }
 
-        .line-number {
-            color: var(--vscode-descriptionForeground);
-            font-size: 0.85em;
+        .change-badge {
+            background: var(--vscode-badge-background);
+            color: var(--vscode-badge-foreground);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
         }
 
+        /* Compact Diff Content */
         .diff-content {
-            display: flex;
-            flex-direction: ${layout === 'side-by-side' ? 'row' : 'column'};
-            gap: 10px;
-            padding: 10px;
+            padding: 10px 14px;
+            display: grid;
+            grid-template-columns: ${layout === 'side-by-side' ? '1fr auto 1fr' : '1fr'};
+            gap: 8px;
+            align-items: start;
+            background: var(--vscode-editor-background);
         }
 
         .diff-side {
-            flex: 1;
             min-width: 0;
         }
 
         .diff-label {
-            font-weight: bold;
-            margin-bottom: 5px;
-            font-size: 0.9em;
-            color: var(--vscode-descriptionForeground);
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .diff-label.old {
@@ -298,55 +368,202 @@ export class DiffViewProvider {
             color: var(--vscode-gitDecoration-addedResourceForeground);
         }
 
+        /* Compact Code Display */
         .diff-code {
-            background-color: var(--vscode-editor-background);
+            background-color: var(--vscode-textCodeBlock-background);
             border: 1px solid var(--vscode-panel-border);
-            border-radius: 3px;
-            padding: 10px;
+            border-radius: 4px;
+            padding: 8px 10px;
             font-family: var(--vscode-editor-font-family);
-            font-size: var(--vscode-editor-font-size);
+            font-size: 11px;
+            line-height: 1.5;
             white-space: pre-wrap;
-            word-break: break-all;
+            word-break: break-word;
+            position: relative;
+            overflow: hidden;
         }
 
         .diff-code.old {
-            background-color: rgba(255, 0, 0, 0.1);
-            border-color: var(--vscode-gitDecoration-deletedResourceForeground);
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.08) 0%, rgba(255, 0, 0, 0.04) 100%);
+            border-left: 3px solid var(--vscode-gitDecoration-deletedResourceForeground);
         }
 
         .diff-code.new {
-            background-color: rgba(0, 255, 0, 0.1);
-            border-color: var(--vscode-gitDecoration-addedResourceForeground);
+            background: linear-gradient(135deg, rgba(0, 255, 0, 0.08) 0%, rgba(0, 255, 0, 0.04) 100%);
+            border-left: 3px solid var(--vscode-gitDecoration-addedResourceForeground);
         }
 
+        /* Compact Arrow */
+        .diff-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--vscode-descriptionForeground);
+            font-size: 16px;
+            opacity: 0.6;
+            padding-top: 16px;
+            min-width: 24px;
+        }
+
+        .diff-arrow::before {
+            content: '→';
+        }
+
+        /* No Changes State */
         .no-changes {
             text-align: center;
-            padding: 40px;
+            padding: 60px 20px;
             color: var(--vscode-descriptionForeground);
         }
 
-        .diff-arrow {
-            align-self: center;
-            color: var(--vscode-descriptionForeground);
-            font-size: 1.5em;
-            margin: ${layout === 'side-by-side' ? '20px 10px 0 10px' : '10px 0'};
+        .no-changes-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
+        .no-changes-text {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Divider between multiple changes in same file */
+        .change-divider {
+            height: 1px;
+            background: var(--vscode-panel-border);
+            margin: 10px 0;
+            opacity: 0.5;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--vscode-editor-background);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--vscode-scrollbarSlider-background);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--vscode-scrollbarSlider-hoverBackground);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .header {
+                padding: 10px 15px;
+            }
+            .header-left {
+                gap: 10px;
+            }
+            .header-title {
+                font-size: 14px;
+            }
+            .stats {
+                font-size: 10px;
+                padding: 3px 8px;
+            }
+            button {
+                padding: 6px 14px;
+                font-size: 11px;
+            }
+            .diff-container {
+                padding: 12px 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .header-left {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            .buttons {
+                width: 100%;
+            }
+            button {
+                flex: 1;
+            }
+            .diff-content {
+                grid-template-columns: 1fr !important;
+                gap: 6px;
+            }
+            .diff-arrow {
+                padding: 6px 0;
+                font-size: 14px;
+            }
+            .diff-arrow::before {
+                content: '↓';
+            }
+            .diff-container {
+                padding: 10px;
+            }
+            .file-header {
+                padding: 8px 10px;
+            }
+            .diff-content {
+                padding: 8px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-title .logo {
+                display: none;
+            }
+            .header-title {
+                font-size: 13px;
+            }
+            .stats {
+                font-size: 9px;
+            }
+            button {
+                padding: 6px 10px;
+                font-size: 10px;
+            }
+            .file-path {
+                font-size: 11px;
+            }
+            .diff-code {
+                font-size: 10px;
+                padding: 6px 8px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <div>
-            <h2>Import Changes Preview</h2>
+        <div class="header-left">
+            <div class="header-title">
+                <span class="logo">🔗</span>
+                <span>Import Changes Preview</span>
+            </div>
             <div class="stats" id="stats">Loading...</div>
         </div>
         <div class="buttons">
-            <button onclick="applyChanges()">Apply Changes</button>
-            <button class="secondary" onclick="cancelChanges()">Cancel</button>
+            <button onclick="applyChanges()">
+                <span>✓</span> Apply Changes
+            </button>
+            <button class="secondary" onclick="cancelChanges()">
+                <span>✕</span> Cancel
+            </button>
         </div>
     </div>
 
     <div class="diff-container" id="diffContainer">
-        <div class="no-changes">No changes to display</div>
+        <div class="no-changes">
+            <div class="no-changes-icon">📝</div>
+            <div class="no-changes-text">No changes to display</div>
+        </div>
     </div>
 
     <script>
@@ -386,7 +603,11 @@ export class DiffViewProvider {
             
             if (!items || items.length === 0) {
                 console.log('No items to display');
-                container.innerHTML = '<div class="no-changes">No changes detected</div>';
+                container.innerHTML = \`
+                    <div class="no-changes">
+                        <div class="no-changes-icon">✓</div>
+                        <div class="no-changes-text">No changes detected</div>
+                    </div>\`;
                 stats.textContent = 'No changes';
                 return;
             }
@@ -404,28 +625,39 @@ export class DiffViewProvider {
 
             const totalFiles = Object.keys(fileGroups).length;
             const totalChanges = items.length;
-            stats.textContent = totalChanges + ' import(s) in ' + totalFiles + ' file(s)';
+            stats.textContent = \`\${totalChanges} change\${totalChanges !== 1 ? 's' : ''} • \${totalFiles} file\${totalFiles !== 1 ? 's' : ''}\`;
             
             console.log('Grouped into ' + totalFiles + ' files');
 
             let html = '';
             for (const [filePath, changes] of Object.entries(fileGroups)) {
                 const fileName = filePath.split(/[\\\\\\/]/).pop();
+                const fileExt = fileName.split('.').pop();
+                const fileIcon = getFileIcon(fileExt);
+                
                 html += \`
                     <div class="diff-file">
-                        <div class="file-header" onclick="viewFile('\${filePath}', \${changes[0].line})">
-                            <span class="file-path">\${fileName}</span>
-                            <span class="line-number">\${changes.length} change(s)</span>
+                        <div class="file-header" onclick="viewFile('\${escapeHtml(filePath)}', \${changes[0].line})">
+                            <div class="file-info">
+                                <span class="file-icon">\${fileIcon}</span>
+                                <span class="file-path" title="\${escapeHtml(filePath)}">\${escapeHtml(fileName)}</span>
+                            </div>
+                            <span class="change-badge">\${changes.length} change\${changes.length !== 1 ? 's' : ''}</span>
                         </div>
-                        \${changes.map(change => \`
+                        \${changes.map((change, index) => \`
+                            \${index > 0 ? '<div class="change-divider"></div>' : ''}
                             <div class="diff-content">
                                 <div class="diff-side">
-                                    <div class="diff-label old">- Line \${change.line + 1} (Before)</div>
+                                    <div class="diff-label old">
+                                        <span>−</span> Line \${change.line + 1} (Before)
+                                    </div>
                                     <div class="diff-code old">\${escapeHtml(change.oldImport)}</div>
                                 </div>
-                                <div class="diff-arrow">${layout === 'side-by-side' ? '→' : '↓'}</div>
+                                <div class="diff-arrow"></div>
                                 <div class="diff-side">
-                                    <div class="diff-label new">+ Line \${change.line + 1} (After)</div>
+                                    <div class="diff-label new">
+                                        <span>+</span> Line \${change.line + 1} (After)
+                                    </div>
                                     <div class="diff-code new">\${escapeHtml(change.newImport)}</div>
                                 </div>
                             </div>
@@ -435,6 +667,23 @@ export class DiffViewProvider {
             }
 
             container.innerHTML = html;
+        }
+
+        function getFileIcon(ext) {
+            const icons = {
+                'js': '📜',
+                'jsx': '⚛️',
+                'ts': '📘',
+                'tsx': '⚛️',
+                'py': '🐍',
+                'go': '🔷',
+                'css': '🎨',
+                'scss': '🎨',
+                'less': '🎨',
+                'json': '📋',
+                'md': '📝'
+            };
+            return icons[ext] || '📄';
         }
 
         function escapeHtml(text) {
