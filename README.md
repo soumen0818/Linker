@@ -1,6 +1,8 @@
 <div align="center">
 
-# 🔗 Linker
+<img src="images/linker-logo.png" alt="Linker Logo" width="80" height="80" />
+
+# Linker
 
 ### Intelligent Import Management for Multi-Language Projects
 
@@ -9,9 +11,16 @@
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/linkerdev.import-linker?style=for-the-badge)](https://marketplace.visualstudio.com/items?itemName=linkerdev.import-linker)
 [![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)](LICENSE)
 
-![Linker Demo](images/linker-logo.png)
-
 **Never break imports again** — Automatically update all import statements when you rename or move files and folders.
+
+### 🎬 Watch Linker in Action
+
+<div align="center">
+  <video src="https://res.cloudinary.com/dsg5dz0ia/video/upload/v1764255598/LINKER_p6bsua.mov" controls width="100%">
+    Your browser does not support the video tag.
+  </video>
+  <p><em>See how Linker automatically updates imports when you rename or move files across your entire workspace!</em></p>
+</div>
 
 [🌐 Official Website](https://linker-steel-xi.vercel.app/) | [Features](#-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [Languages](#-supported-languages) • [Configuration](#%EF%B8%8F-configuration) • [Documentation](#-documentation)
 
