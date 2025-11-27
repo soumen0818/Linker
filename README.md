@@ -466,7 +466,7 @@ If Linker saves you time, please:
 
 ## 📊 Project Status
 
-**Current Version:** 1.1.4  
+**Current Version:** 1.1.5  
 **Status:** Production Ready ✅  
 **Languages:** 4 (JavaScript/TypeScript, Python, Go, CSS)  
 **Active Development:** Yes  
@@ -616,6 +616,6 @@ If you find **Linker** useful, please consider:
 
 **Developed by [Soumen Das](https://www.soumendas.me/)** | [LinkedIn](https://www.linkedin.com/in/soumen-das-76b867218/)
 
-**Version 1.1.4** | [🌐 Official Site](https://linker-steel-xi.vercel.app/) | [⬆ Back to Top](#-linker)
+**Version 1.1.5** | [🌐 Official Site](https://linker-steel-xi.vercel.app/) | [⬆ Back to Top](#-linker)
 
 </div>
