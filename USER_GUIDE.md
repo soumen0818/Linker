@@ -1,378 +1,1030 @@
-# Linker User Guide
+# Linker - Complete User Guide
 
-**Complete documentation for the Linker VS Code extension**
+<div align="center">
 
-Version 1.1.2 (Phase 2) | Last Updated: November 2025
+**Professional Documentation for Intelligent Import Management**
 
----
+Version 1.1.5 | Last Updated: November 2025
 
-## Table of Contents
+[Official Website](https://linker-steel-xi.vercel.app/) • [GitHub Repository](https://github.com/soumen0818/Linker) • [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=linkerdev.import-linker)
 
-1. [Introduction](#introduction)
-2. [Installation](#installation)
-3. [Getting Started](#getting-started)
-4. [Supported Languages](#supported-languages)
-5. [Features](#features)
-6. [Configuration](#configuration)
-7. [Advanced Usage](#advanced-usage)
-8. [Troubleshooting](#troubleshooting)
-9. [Best Practices](#best-practices)
-10. [FAQ](#faq)
+</div>
 
 ---
 
-## Introduction
+## 📑 Table of Contents
 
-### What is Linker?
+### Getting Started
+1. [Introduction](#1-introduction)
+2. [Installation & Setup](#2-installation--setup)
+3. [Quick Start Guide](#3-quick-start-guide)
+4. [First Time Configuration](#4-first-time-configuration)
 
-Linker is an intelligent VS Code extension that automatically updates import statements across your entire codebase when you rename or move files and folders. It supports multiple programming languages and provides a visual preview of all changes before applying them.
+### Core Features
+5. [Supported Languages & Patterns](#5-supported-languages--patterns)
+6. [Smart Import Detection](#6-smart-import-detection)
+7. [Visual Diff Preview](#7-visual-diff-preview)
+8. [Undo/Redo System](#8-undoredo-system)
 
-### Why Use Linker?
+### Advanced Features
+9. [Path Alias Resolution](#9-path-alias-resolution)
+10. [Git Integration](#10-git-integration)
+11. [Format Preservation](#11-format-preservation)
+12. [Performance Optimization](#12-performance-optimization)
 
-- **Save Time:** No more manually finding and updating imports
-- **Prevent Errors:** Avoid broken imports during refactoring
-- **Multi-Language:** Works with JavaScript, TypeScript, Python, Go, and CSS
-- **Visual Preview:** See all changes before applying them
-- **Undo/Redo:** Full history tracking with easy reversion
-- **Git Integration:** Seamlessly works with your Git workflow
+### Configuration
+13. [Settings Reference](#13-settings-reference)
+14. [Workspace vs Global Settings](#14-workspace-vs-global-settings)
+15. [Language-Specific Configuration](#15-language-specific-configuration)
+16. [Performance Tuning](#16-performance-tuning)
 
-### Key Benefits
+### Usage Scenarios
+17. [Working with Monorepos](#17-working-with-monorepos)
+18. [Large Codebase Management](#18-large-codebase-management)
+19. [Multi-Language Projects](#19-multi-language-projects)
+20. [Team Collaboration](#20-team-collaboration)
 
-✅ **Zero Configuration** — Works out-of-the-box with smart defaults  
-✅ **Visual Feedback** — See exactly what will change before applying  
-✅ **Format Preservation** — Maintains your code style (quotes, semicolons, indentation)  
-✅ **Performance Optimized** — Handles large codebases (1000+ files) efficiently  
-✅ **Production Ready** — Battle-tested with robust error handling  
+### Troubleshooting & Support
+21. [Common Issues & Solutions](#21-common-issues--solutions)
+22. [Error Messages Explained](#22-error-messages-explained)
+23. [Performance Issues](#23-performance-issues)
+24. [Getting Help](#24-getting-help)
+
+### Reference
+25. [Best Practices](#25-best-practices)
+26. [FAQ](#26-faq)
+27. [Keyboard Shortcuts](#27-keyboard-shortcuts)
+28. [Command Reference](#28-command-reference)
 
 ---
 
-## Installation
+## 1. Introduction
 
-### Method 1: VS Code Marketplace (Recommended)
+### 1.1 What is Linker?
+
+Linker is an intelligent VS Code extension that **automatically updates import statements** across your entire codebase when you rename or move files and folders. It eliminates the tedious task of manually tracking down and updating import paths, preventing broken imports and compilation errors during refactoring.
+
+### 1.2 Why Linker?
+
+**The Problem:**
+When you rename or move a file in a large project, every import statement referencing that file becomes broken. Manually finding and updating these imports is:
+- ⏰ Time-consuming and tedious
+- ❌ Error-prone (easy to miss imports)
+- 🔍 Difficult in large codebases
+- 😫 Frustrating when imports are spread across many files
+
+**The Solution:**
+Linker automatically:
+- 🔍 Scans your entire workspace for affected imports
+- 🎯 Detects all import patterns (ES6, CommonJS, Python, Go, CSS)
+- 📊 Shows you exactly what will change before applying
+- ⚡ Updates all imports instantly with one click
+- 🔄 Supports undo/redo if you change your mind
+- 🎨 Preserves your code formatting and style
+
+### 1.3 Key Benefits
+
+| Benefit | Description |
+|---------|-------------|
+| **🚀 Save Time** | Automatically update hundreds of imports in seconds |
+| **✅ Zero Errors** | Never break imports during refactoring |
+| **👀 Visual Preview** | See exactly what will change before applying |
+| **🌐 Multi-Language** | JavaScript, TypeScript, Python, Go, CSS support |
+| **🔧 Path Aliases** | Full support for TypeScript, Python, Go, CSS aliases |
+| **⚡ Fast** | Optimized for large codebases (50,000+ files) |
+| **🎨 Style Preserving** | Maintains quotes, semicolons, indentation |
+| **🔄 Undo/Redo** | Complete history tracking with keyboard shortcuts |
+| **🔗 Git Integration** | Uses `git mv` to preserve file history |
+| **⚙️ Configurable** | Extensive settings for every use case |
+
+### 1.4 What Makes Linker Unique?
+
+**Only extension with FULL alias support across ALL 4 languages:**
+- ✅ TypeScript/JavaScript: `tsconfig.json` paths (`@/`, `~/`, custom)
+- ✅ Python: `pyproject.toml` + auto-detection (`src/`, `app/`, `lib/`)
+- ✅ Go: `go.mod` module paths and replace directives
+- ✅ CSS: webpack/vite/parcel aliases (`@`, `~`)
+
+**Production-Ready Performance:**
+- Handles codebases with 50,000+ files
+- Smart scanning with configurable limits
+- File size filtering and operation timeouts
+- Dynamic concurrency adjustment
+- Workspace analysis and optimization
+
+---
+
+## 2. Installation & Setup
+
+### 2.1 Installation Methods
+
+#### Method 1: VS Code Marketplace (Recommended)
 
 1. **Open VS Code**
-2. Click the **Extensions** icon in the sidebar (or press `Ctrl+Shift+X`)
+2. Click the **Extensions** icon in the sidebar (or press `Ctrl+Shift+X` / `Cmd+Shift+X`)
 3. Search for **"Linker"** or **"Import Linker"**
-4. Click **Install**
-5. Reload VS Code if prompted
+4. Click **Install** button
+5. Reload VS Code if prompted (usually automatic)
 
-### Method 2: Command Line
+#### Method 2: Command Line Installation
 
 Open your terminal and run:
 
 ```bash
+# Windows/Linux/macOS
 code --install-extension linkerdev.import-linker
 ```
 
-### Method 3: Manual Installation
+#### Method 3: Manual Installation from VSIX
 
 1. Download the `.vsix` file from [GitHub Releases](https://github.com/soumen0818/Linker/releases)
-2. In VS Code, go to Extensions (`Ctrl+Shift+X`)
-3. Click the `...` menu at the top
+2. In VS Code, open Extensions view (`Ctrl+Shift+X`)
+3. Click the `...` (More Actions) menu at the top right
 4. Select **"Install from VSIX..."**
-5. Choose the downloaded file
+5. Navigate to and select the downloaded `.vsix` file
+6. Click **"Install"** and reload VS Code
 
-### Verify Installation
+### 2.2 Verify Installation
 
-After installation:
+After installation, verify Linker is working:
 
-1. Check that Linker appears in your Extensions list
-2. Open the Command Palette (`Ctrl+Shift+P`)
-3. Type "Linker" — you should see Linker commands
+**Step 1: Check Extension List**
+1. Open Extensions view (`Ctrl+Shift+X`)
+2. Search for "Linker"
+3. Confirm it shows as "Installed"
+
+**Step 2: Test Commands**
+1. Open Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`)
+2. Type "Linker"
+3. You should see these commands:
+   - Linker: Undo Last Import Changes
+   - Linker: Redo Import Changes
+   - Linker: Show Change History
+   - Linker: Change Settings Preference
+
+**Step 3: Verify Auto-Activation**
+Linker activates automatically when VS Code starts. No manual activation needed.
+
+### 2.3 System Requirements
+
+- **VS Code Version:** 1.75.0 or higher
+- **Operating Systems:** Windows, macOS, Linux
+- **Node.js:** Not required (extension runs in VS Code's runtime)
+- **Disk Space:** ~250 KB
+
+### 2.4 Supported Project Types
+
+Linker works with any project containing:
+- JavaScript/TypeScript projects (React, Vue, Angular, Node.js, etc.)
+- Python projects (Django, Flask, FastAPI, etc.)
+- Go projects (any Go modules)
+- CSS/SCSS/LESS projects (with or without build tools)
+- Monorepos and multi-language projects
 
 ---
 
-## Getting Started
+## 3. Quick Start Guide
 
-### Quick Start (3 Steps)
+### 3.1 Your First Rename (3 Steps)
 
-#### Step 1: Rename a File
 
-1. Open your project in VS Code
-2. In the Explorer, right-click on any file
-3. Select **"Rename"** (or press `F2`)
-4. Type the new name and press Enter
+Let's walk through a complete example from start to finish.
 
-#### Step 2: Review the Preview
+**Scenario:** You have two TypeScript files, and you want to rename one.
 
-Linker will show a preview window with:
-- List of files that will be modified
-- Before/after comparison of each import
-- Total number of imports to update
+**Step 1: Create Your Files**
 
-#### Step 3: Apply or Cancel
-
-- Click **"Apply"** to update all imports
-- Click **"Cancel"** to abort the operation
-- All changes happen instantly!
-
-### Your First Example
-
-Let's try a simple example:
-
-1. **Create two files:**
-
+Create `utils.ts`:
 ```typescript
 // utils.ts
-export const greet = (name: string) => {
-  return `Hello, ${name}!`;
-};
+export const greet = (name: string) => `Hello, ${name}!`;
+export const add = (a: number, b: number) => a + b;
 ```
 
+Create `app.ts`:
 ```typescript
 // app.ts
-import { greet } from './utils';
+import { greet, add } from './utils';
 
 console.log(greet('World'));
+console.log(add(2, 3));
 ```
 
-2. **Rename `utils.ts` to `helpers.ts`:**
-   - Right-click `utils.ts` → Rename
-   - Type `helpers.ts` and press Enter
+**Step 2: Rename the File**
+1. In VS Code Explorer, right-click on `utils.ts`
+2. Select **"Rename"** (or press `F2`)
+3. Type `helpers.ts`
+4. Press **Enter**
 
-3. **See the preview:**
-   - Linker shows that `app.ts` will be updated
-   - Before: `import { greet } from './utils';`
-   - After: `import { greet } from './helpers';`
+**Step 3: Preview Appears**
 
-4. **Click "Apply":**
-   - `app.ts` is automatically updated!
-   - ✅ No broken imports
+Linker instantly shows a beautiful preview window with:
+- Header showing "Import Changes Preview"
+- File badge: `app.ts` with file icon
+- Before/After comparison:
+  ```
+  Before: import { greet, add } from './utils';
+  After:  import { greet, add } from './helpers';
+  ```
+- Action buttons: **Apply Changes** and **Cancel**
+
+**Step 4: Apply Changes**
+1. Review the changes (look correct? ✅)
+2. Click **"Apply Changes"**
+3. Done! Your import is updated instantly
+
+**Step 5: Verify**
+Open `app.ts` and see:
+```typescript
+// app.ts
+import { greet, add } from './helpers';  // ✅ Updated automatically!
+
+console.log(greet('World'));
+console.log(add(2, 3));
+```
+
+### 3.2 Understanding the Preview Window
+
+The preview window is your control center. Here's what each part means:
+
+**Header Section:**
+- **Title:** "Import Changes Preview"
+- **Stats:** Shows total files affected (e.g., "1 file will be modified")
+- **Layout Toggle:** Switch between side-by-side and inline view
+
+**File Sections:**
+Each affected file gets its own section with:
+- **File Icon:** Visual indicator (📜 .js, 🐍 .py, 🎨 .css, 🔷 .go, ⚡ .ts)
+- **File Path:** Relative path from workspace root
+- **Change Count:** Number of imports changed in that file
+
+**Diff View:**
+- **Before (Left/Top):** Original import statement with red background
+- **Arrow (Middle):** Shows direction of change (→ desktop, ↓ mobile)
+- **After (Right/Bottom):** New import statement with green background
+- **Syntax Highlighting:** Color-coded for easy reading
+
+**Action Buttons:**
+- **Apply Changes:** Updates all files (green, primary action)
+- **Cancel:** Closes preview without making changes (gray)
+
+**Responsive Design:**
+- Desktop (>1024px): Side-by-side layout with horizontal arrow
+- Tablet (768-1024px): Compact side-by-side
+- Mobile (<768px): Vertical stacking with downward arrow
+
+### 3.3 Testing All Features
+
+Try these scenarios to familiarize yourself with Linker:
+
+**Test 1: Folder Rename**
+1. Create a folder `services/` with file `userService.ts`
+2. Import it somewhere: `import { getUser } from './services/userService'`
+3. Rename folder to `api/`
+4. Watch Linker update: `import { getUser } from './api/userService'`
+
+**Test 2: Multi-File Update**
+1. Create `utils.ts` and import it in 3 different files
+2. Rename `utils.ts` to `helpers.ts`
+3. Preview shows all 3 files will be updated
+4. Click Apply and verify all 3 files changed
+
+**Test 3: Undo/Redo**
+1. Perform a rename and apply changes
+2. Press `Ctrl+Alt+Z` to undo
+3. Press `Ctrl+Alt+Y` to redo
+4. Open Command Palette → "Linker: Show Change History"
+
+**Test 4: Path Aliases**
+1. If you have `tsconfig.json` with paths like `@/utils`
+2. Rename the file
+3. Linker updates alias imports too!
 
 ---
 
-## Supported Languages
+## 4. First Time Configuration
 
-### JavaScript / TypeScript
+### 4.1 Workspace vs Global Settings
+
+**When you first use Linker**, it will ask you to choose where to store settings:
+
+**The Prompt:**
+```
+Where would you like to configure Linker settings?
+
+[Workspace Settings]  [Global Settings]
+```
+
+**What This Means:**
+
+| Option | Scope | Best For | Settings Location |
+|--------|-------|----------|-------------------|
+| **Workspace** | Current project only | Team projects, shared repos | `.vscode/settings.json` |
+| **Global** | All your projects | Personal preference, consistency | User settings |
+
+**Workspace Settings** (Recommended for Teams):
+- ✅ Settings shared with team via Git
+- ✅ Project-specific configuration
+- ✅ Different settings per project
+- ❌ Creates `.vscode/` folder in project
+- **Use when:** Working in a team or project needs specific settings
+
+**Global Settings** (Recommended for Personal):
+- ✅ Same settings across all projects
+- ✅ No `.vscode/` folder created
+- ✅ Personal preference
+- ❌ Not shared with team
+- **Use when:** Working solo or want consistent behavior everywhere
+
+### 4.2 Settings Configured by Linker
+
+When you choose a preference, Linker automatically configures these optimal defaults:
+
+```json
+{
+  "linker.autoApply": false,
+  "linker.git.useGitMv": true,
+  "linker.preview.diffView": true,
+  "linker.preview.layout": "side-by-side",
+  "linker.formatting.quoteStyle": "auto",
+  "linker.formatting.semicolons": "auto",
+  "linker.history.enabled": true,
+  "linker.history.maxEntries": 50,
+  "linker.multiLanguage.python": true,
+  "linker.multiLanguage.python.aliasSupport": true,
+  "linker.multiLanguage.go": true,
+  "linker.multiLanguage.go.aliasSupport": true,
+  "linker.multiLanguage.css": true,
+  "linker.multiLanguage.css.aliasSupport": true,
+  "linker.performance.smartScanning": true
+}
+```
+
+### 4.3 Changing Your Preference Later
+
+If you change your mind:
+
+**Method 1: Command Palette**
+1. Press `Ctrl+Shift+P` (Cmd+Shift+P on Mac)
+2. Type "Linker: Change Settings Preference"
+3. Select the command
+4. Choose new preference: Workspace or Global
+
+**Method 2: Manual Settings**
+Edit the settings directly:
+- Workspace: Open `.vscode/settings.json` in your project
+- Global: File → Preferences → Settings → search "Linker"
+
+### 4.4 Recommended Initial Setup
+
+**For JavaScript/TypeScript Projects:**
+```json
+{
+  "linker.fileExtensions": ["js", "ts", "jsx", "tsx"],
+  "linker.exclude": ["**/node_modules/**", "**/dist/**", "**/build/**"],
+  "linker.formatting.quoteStyle": "single",
+  "linker.formatting.semicolons": "never"
+}
+```
+
+**For Python Projects:**
+```json
+{
+  "linker.fileExtensions": ["py"],
+  "linker.exclude": ["**/__pycache__/**", "**/*.egg-info/**", "**/venv/**"],
+  "linker.autoApply": true,
+  "linker.multiLanguage.python.aliasSupport": true
+}
+```
+
+**For Large Codebases (1000+ files):**
+```json
+{
+  "linker.performance.maxFilesToScan": 8000,
+  "linker.performance.maxConcurrentFiles": 10,
+  "linker.exclude": [
+    "**/node_modules/**",
+    "**/.git/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/.next/**",
+    "**/coverage/**"
+  ]
+}
+```
+
+---
+
+## 5. Supported Languages & Patterns
+
+Linker provides comprehensive support for multiple languages with intelligent pattern detection.
+
+### 5.1 JavaScript & TypeScript
+
+**File Extensions:** `.js`, `.ts`, `.jsx`, `.tsx`, `.mjs`, `.cjs`
 
 **Supported Import Patterns:**
 
 ```javascript
+// ═══════════════════════════════════════
 // ES6 Imports
+// ═══════════════════════════════════════
+
+// Default import
+import React from 'react';
 import Component from './Component';
-import { named } from './utils';
+
+// Named imports
+import { useState, useEffect } from 'react';
+import { Button, Input } from './components';
+
+// Namespace import
 import * as utils from './utils';
+
+// Mixed import
+import React, { useState } from 'react';
+
+// Default with alias
 import { default as Component } from './Component';
 
-// CommonJS
+// Type imports (TypeScript)
+import type { User } from './types';
+import { type User, type Post } from './types';
+import type * as Types from './types';
+
+// ═══════════════════════════════════════
+// CommonJS (require)
+// ═══════════════════════════════════════
+
+const fs = require('fs');
 const utils = require('./utils');
-const { helper } = require('../helpers');
+const { helper, formatter } = require('../helpers');
+const path = require('path').join;
 
+// ═══════════════════════════════════════
 // Dynamic Imports
-const module = await import('./dynamic');
-import('./lazy').then(m => m.default());
+// ═══════════════════════════════════════
 
+const module = await import('./module');
+import('./lazy').then(m => m.default());
+const Component = lazy(() => import('./Component'));
+
+// ═══════════════════════════════════════
 // Re-exports
+// ═══════════════════════════════════════
+
 export { something } from './other';
 export * from './all';
 export * as utils from './utils';
-
-// Type Imports (TypeScript)
-import type { User } from './types';
-import { type User, type Post } from './types';
+export { default } from './Component';
+export { Button as CustomButton } from './ui';
 ```
 
-**File Extensions:** `.js`, `.ts`, `.jsx`, `.tsx`, `.mjs`, `.cjs`
+**✅ All patterns are fully supported and automatically detected.**
 
----
+### 5.2 Python
 
-### Python
+**File Extensions:** `.py`
 
 **Supported Import Patterns:**
 
 ```python
-# Absolute imports
+# ═══════════════════════════════════════
+# Absolute Imports
+# ═══════════════════════════════════════
+
 import utils
 import utils.helpers
+import utils.helpers.formatters
+
 from utils import helper
 from utils.helpers import format_date, format_time
+from utils.helpers.formatters import currency, percentage
 
-# Relative imports
+# ═══════════════════════════════════════
+# Relative Imports
+# ═══════════════════════════════════════
+
 from . import helpers
 from .helpers import format_date
 from .. import utils
-from ..utils.helpers import format_date
+from ..utils import helper
+from ...shared import config
 
-# Import with alias
+# ═══════════════════════════════════════
+# Import with Alias
+# ═══════════════════════════════════════
+
 import utils as u
+import numpy as np
 from utils import helper as h
+from django.shortcuts import render as render_template
+
+# ═══════════════════════════════════════
+# Multiple Imports
+# ═══════════════════════════════════════
+
+from utils import (
+    helper,
+    formatter,
+    validator
+)
+
+import utils, helpers, formatters
 ```
 
-**File Extensions:** `.py`
-
 **Important Notes:**
-- Linker preserves relative vs. absolute import style
-- Dot notation is automatically converted (e.g., `utils/helpers.py` → `utils.helpers`)
+- Linker **preserves** relative vs. absolute import style
+- Automatically converts file paths to dot notation (`utils/helpers.py` → `utils.helpers`)
+- Respects `__init__.py` for package imports
+- Supports nested package structures
 
----
+**Python-Specific Behavior:**
+- Renaming `helpers.py` → Updates all `from .helpers import ...`
+- Renaming `utils/` folder → Updates all `from utils.x import ...`
+- Moving file to different package → Updates package path automatically
 
-### Go
+### 5.3 Go
+
+**File Extensions:** `.go`
 
 **Supported Import Patterns:**
 
 ```go
-// Single imports
-import "fmt"
-import "project/utils"
+// ═══════════════════════════════════════
+// Single Imports
+// ═══════════════════════════════════════
 
-// Block imports
+import "fmt"
+import "log"
+import "github.com/user/project/utils"
+import "myproject/internal/helpers"
+
+// ═══════════════════════════════════════
+// Block Imports
+// ═══════════════════════════════════════
+
 import (
     "fmt"
     "log"
-    "project/utils"
-    "project/helpers"
+    "os"
+    
+    "github.com/gin-gonic/gin"
+    "github.com/user/project/utils"
+    
+    "myproject/internal/config"
+    "myproject/internal/database"
 )
 
-// Import with alias
+// ═══════════════════════════════════════
+// Import with Alias
+// ═══════════════════════════════════════
+
 import (
-    u "project/utils"
-    h "project/helpers"
+    utils "github.com/user/project/utils"
+    helpers "myproject/internal/helpers"
+    . "myproject/internal/constants"
+    _ "github.com/lib/pq"
 )
 ```
 
-**File Extensions:** `.go`
-
 **Important Notes:**
 - Go imports reference **packages** (folders), not individual files
-- Renaming a **folder** updates all imports of that package
-- Renaming a **file** doesn't require import updates (file is part of package)
+- Renaming a **folder** → Updates all imports of that package
+- Renaming a **file** → No import updates needed (file is part of package)
+- Linker reads `go.mod` for module path resolution
 
----
+**Go-Specific Behavior:**
+- Module path from `go.mod`: `module github.com/user/project`
+- Renaming `internal/helpers/` → Updates to new folder name
+- Supports `replace` directives in `go.mod`
+- Preserves import grouping and organization
 
-### CSS / SCSS / LESS
+### 5.4 CSS, SCSS & LESS
+
+**File Extensions:** `.css`, `.scss`, `.less`, `.sass`
 
 **Supported Import Patterns:**
 
 ```css
-/* CSS @import */
-@import "styles/variables.css";
-@import url("styles/mixins.css");
-@import url('styles/reset.css');
+/* ═══════════════════════════════════════ */
+/* CSS @import Statements */
+/* ═══════════════════════════════════════ */
 
-/* SCSS/LESS @import */
+@import "styles/variables.css";
+@import 'styles/mixins.css';
+@import url("styles/reset.css");
+@import url('styles/base.css');
+@import url(styles/typography.css);
+
+/* ═══════════════════════════════════════ */
+/* SCSS/LESS @import (extension optional) */
+/* ═══════════════════════════════════════ */
+
 @import 'base/variables';
+@import 'base/variables.scss';
 @import 'components/buttons';
 @import '../shared/mixins';
-```
+@import '../../global/colors';
 
-**File Extensions:** `.css`, `.scss`, `.less`
+/* ═══════════════════════════════════════ */
+/* Build Tool Aliases */
+/* ═══════════════════════════════════════ */
+
+@import '~bootstrap/dist/css/bootstrap';  // webpack ~
+@import '@/styles/variables';              // @ alias
+@import '~/assets/fonts';                  // ~ alias
+
+/* ═══════════════════════════════════════ */
+/* SCSS @use and @forward (Modern) */
+/* ═══════════════════════════════════════ */
+
+@use 'variables' as vars;
+@use '../shared/mixins';
+@forward 'components/buttons';
+```
 
 **Important Notes:**
-- Supports both `@import` and `@import url()` syntax
-- File extensions can be included or omitted
+- Both `@import` and `@import url()` syntax supported
+- File extensions can be included or omitted (`.scss`, `.css`)
 - Relative paths work with or without `./` prefix
+- Webpack/Vite/Parcel aliases (`@`, `~`) fully supported
 
 ---
 
-## Features
+## 6. Smart Import Detection
 
-### 1. Visual Diff Preview
+### 6.1 How Linker Finds Imports
 
-**What it does:**  
-Shows you exactly what will change before applying updates.
+Linker uses advanced pattern matching to detect imports:
 
-**How to use:**
-1. Rename a file or folder
-2. A preview window appears showing:
-   - Each file that will be modified
-   - Before/after comparison for each import
-   - Total number of changes
+**Step 1: File Scan**
+- Scans all files matching `linker.fileExtensions`
+- Respects `linker.exclude` patterns
+- Uses smart caching to avoid re-reading unchanged files
 
-**Preview Options:**
+**Step 2: Pattern Matching**
+- Language-specific regex patterns for each import type
+- Handles single-line and multi-line imports
+- Detects comments and skips them appropriately
 
-- **Layout:** Choose "Side-by-side" or "Inline" diff view
-- **Syntax Highlighting:** Color-coded changes for easy review
-- **File Navigation:** Click on any file to open it
+**Step 3: Path Resolution**
+- Resolves relative paths (`./`, `../`)
+- Resolves absolute paths from workspace root
+- Resolves TypeScript path aliases from `tsconfig.json`
+- Resolves Python path aliases from `pyproject.toml`
+- Resolves Go module paths from `go.mod`
+- Resolves CSS build tool aliases from config files
 
-**Customization:**
+**Step 4: Match Verification**
+- Checks if resolved path matches renamed file
+- Calculates new path after rename
+- Generates before/after preview
 
-```json
-{
-  "linker.preview.diffView": true,
-  "linker.preview.layout": "side-by-side"  // or "inline"
-}
+### 6.2 Path Resolution Examples
+
+**Relative Paths:**
+```
+Project structure:
+src/
+  components/
+    Button.tsx
+  pages/
+    Home.tsx → import Button from '../components/Button'
+
+Rename Button.tsx to CustomButton.tsx:
+→ import Button from '../components/CustomButton'
 ```
 
----
-
-### 2. Undo/Redo System
-
-**What it does:**  
-Tracks all import changes so you can easily revert or reapply them.
-
-**Keyboard Shortcuts:**
-
-| Action | Windows/Linux | Mac |
-|--------|---------------|-----|
-| Undo | `Ctrl+Alt+Z` | `Cmd+Alt+Z` |
-| Redo | `Ctrl+Alt+Y` | `Cmd+Alt+Y` |
-
-**Using Commands:**
-
-1. Open Command Palette (`Ctrl+Shift+P`)
-2. Type one of:
-   - `Linker: Undo Last Import Changes`
-   - `Linker: Redo Import Changes`
-   - `Linker: Show Import History`
-   - `Linker: Clear Import History`
-
-**History Management:**
-
-```json
+**TypeScript Aliases:**
+```
+tsconfig.json:
 {
-  "linker.history.enabled": true,
-  "linker.history.maxEntries": 50  // Default: 50, Range: 10-100
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"],
+      "@components/*": ["components/*"]
+    }
+  }
 }
+
+File: src/pages/Home.tsx
+import Button from '@components/Button'
+
+Rename src/components/Button.tsx to CustomButton.tsx:
+→ import Button from '@components/CustomButton'
 ```
 
-**History is stored:**
-- In memory during VS Code session
-- Lost when VS Code closes (by design for privacy)
-- Can be cleared manually via command
+**Python Packages:**
+```
+Project structure:
+myproject/
+  utils/
+    __init__.py
+    helpers.py
+  app.py → from myproject.utils.helpers import format
 
----
+Rename helpers.py to formatters.py:
+→ from myproject.utils.formatters import format
+```
 
-### 3. Format Preservation
+**Go Modules:**
+```
+go.mod:
+module github.com/user/myproject
 
-**What it does:**  
-Maintains your code style when updating imports.
+File: main.go
+import "github.com/user/myproject/internal/utils"
 
-**Preserves:**
-- **Quote Style:** Single quotes, double quotes, or backticks
-- **Semicolons:** Present or absent
-- **Indentation:** Spaces or tabs
-- **Line Breaks:** Empty lines and spacing
+Rename internal/utils/ to internal/helpers/:
+→ import "github.com/user/myproject/internal/helpers"
+```
 
-**Auto-Detection:**
+### 6.3 Edge Cases Handled
 
-Linker analyzes your existing code to match your style:
+Linker intelligently handles complex scenarios:
 
+**✅ Multiple Imports from Same File:**
 ```typescript
-// If your code uses single quotes and no semicolons:
-import { utils } from './utils'
+import { Button } from './components/Button';
+import { ButtonProps } from './components/Button';
+import type { ButtonStyle } from './components/Button';
 
-// Linker will update to:
-import { utils } from './helpers'  // Same style! ✅
+// All three updated when Button.tsx is renamed
 ```
 
-**Manual Configuration:**
+**✅ Mixed Import Styles:**
+```javascript
+const utils = require('./utils');
+import { helper } from './utils';
+export { formatter } from './utils';
 
-```json
-{
-  "linker.formatting.quoteStyle": "auto",  // "single", "double", or "auto"
-  "linker.formatting.semicolons": "auto"    // "always", "never", or "auto"
-}
+// All three patterns detected and updated
+```
+
+**✅ Dynamic Imports:**
+```typescript
+const Component = lazy(() => import('./components/Button'));
+const module = await import(`./utils/${filename}`);
+
+// Static paths updated, template literals left unchanged (as they should be)
+```
+
+**✅ Comments Preserved:**
+```typescript
+// import { old } from './old-file';  ← Not updated (commented)
+import { Button } from './Button';    ← Updated ✅
+/* import { test } from './test'; */  ← Not updated (commented)
 ```
 
 ---
 
-### 4. TypeScript Path Aliases
+## 7. Visual Diff Preview
 
-**What it does:**  
-Resolves and updates TypeScript path aliases from `tsconfig.json`.
+### 7.1 Preview Window Layout
 
-**Example Configuration:**
+The preview window is your command center for reviewing changes before applying them.
 
+**Desktop View (>1024px):**
+```
+╔════════════════════════════════════════════════════════════════╗
+║  Import Changes Preview                         [Layout: ⚡]   ║
+║  2 files will be modified                                       ║
+╠════════════════════════════════════════════════════════════════╣
+║                                                                 ║
+║  📜 src/components/App.tsx  •  1 import changed                ║
+║  ┌──────────────────────────────┬───┬────────────────────────┐ ║
+║  │ import { util } from './utils │ → │ import { util } from ' │ ║
+║  │                                 │   │ ./helpers'            │ ║
+║  └──────────────────────────────┴───┴────────────────────────┘ ║
+║                                                                 ║
+║  ⚡ src/pages/Home.tsx  •  2 imports changed                   ║
+║  ┌──────────────────────────────┬───┬────────────────────────┐ ║
+║  │ import utils from './utils'    │ → │ import utils from './h │ ║
+║  │ from utils import helper       │ → │ from helpers import he │ ║
+║  └──────────────────────────────┴───┴────────────────────────┘ ║
+║                                                                 ║
+║           [Apply Changes]          [Cancel]                    ║
+╚════════════════════════════════════════════════════════════════╝
+```
+
+**Mobile/Tablet View (<768px):**
+```
+╔═══════════════════════════════════════╗
+║  Import Changes Preview               ║
+║  2 files will be modified             ║
+╠═══════════════════════════════════════╣
+║                                       ║
+║  📜 src/components/App.tsx            ║
+║  ┌─────────────────────────────────┐ ║
+║  │ import { util } from './utils'   │ ║
+║  │              ↓                   │ ║
+║  │ import { util } from './helpers' │ ║
+║  └─────────────────────────────────┘ ║
+║                                       ║
+║  [Apply] [Cancel]                    ║
+╚═══════════════════════════════════════╝
+```
+
+### 7.2 Understanding Visual Elements
+
+**File Type Icons:**
+- 📜 JavaScript/TypeScript (`.js`, `.ts`, `.jsx`, `.tsx`)
+- 🐍 Python (`.py`)
+- 🔷 Go (`.go`)
+- 🎨 CSS/SCSS/LESS (`.css`, `.scss`, `.less`)
+- ⚡ Generic/Other files
+
+**Color Coding:**
+- 🔴 Red background: Old/removed code
+- 🟢 Green background: New/added code
+- 🔵 Blue text: File paths and headers
+- ⚪ White/default: Unchanged context
+
+**Change Indicators:**
+- `→` arrow (desktop): Side-by-side comparison
+- `↓` arrow (mobile): Vertical stacking
+- Badge count: "2 imports changed"
+
+### 7.3 Preview Options
+
+**Layout Switching:**
+
+Press the layout button in the header to toggle between:
+
+1. **Side-by-Side** (Default):
+   - Before on left, after on right
+   - Best for desktop/large screens
+   - Easy to compare line-by-line
+   
+2. **Inline**:
+   - Before above, after below
+   - Better for narrow screens
+   - Compact vertical layout
+
+**Configuration:**
+```json
+{
+  "linker.preview.diffView": true,      // Enable/disable preview
+  "linker.preview.layout": "side-by-side"  // "side-by-side" or "inline"
+}
+```
+
+### 7.4 Navigating the Preview
+
+**Keyboard Navigation:**
+- `Tab`: Move between Apply and Cancel buttons
+- `Enter`: Activate focused button
+- `Esc`: Close preview (same as Cancel)
+
+**Mouse/Touch:**
+- Scroll to see all changes
+- Click file paths to jump to that file
+- Click Apply/Cancel buttons
+
+**Tips:**
+- Review ALL changes before applying
+- Check file paths are correct
+- Look for unexpected changes
+- Verify import syntax looks right
+
+---
+
+## 8. Undo/Redo System
+
+### 8.1 How History Works
+
+Linker maintains a complete history of all import changes, allowing you to undo and redo operations at any time.
+
+**What's Tracked:**
+- Every file renamed or moved
+- All import updates applied
+- Original and new content of each file
+- Timestamp of each operation
+
+**Storage:**
+- History stored in VS Code's memory
+- Persists during VS Code session
+- Cleared when VS Code closes (privacy by design)
+- Configurable maximum entries (default: 50)
+
+### 8.2 Undo Operations
+
+**When to Undo:**
+- Made a mistake renaming a file
+- Applied changes by accident
+- Want to try a different file name
+- Need to revert for any reason
+
+**How to Undo:**
+
+**Method 1: Keyboard Shortcut (Fastest)**
+- Windows/Linux: `Ctrl+Alt+Z`
+- macOS: `Cmd+Alt+Z`
+
+**Method 2: Command Palette**
+1. Press `Ctrl+Shift+P` (Cmd+Shift+P on Mac)
+2. Type "Linker: Undo"
+3. Select "Linker: Undo Last Import Changes"
+4. Changes reverted instantly!
+
+**What Happens:**
+1. Last operation is reversed
+2. All affected files restored to previous state
+3. File rename is also undone
+4. Operation moved to redo stack
+
+### 8.3 Redo Operations
+
+**When to Redo:**
+- Undid by mistake
+- Changed your mind after undo
+- Want to reapply reverted changes
+
+**How to Redo:**
+
+**Method 1: Keyboard Shortcut**
+- Windows/Linux: `Ctrl+Alt+Y`
+- macOS: `Cmd+Alt+Y`
+
+**Method 2: Command Palette**
+1. Press `Ctrl+Shift+P`
+2. Type "Linker: Redo"
+3. Select "Linker: Redo Import Changes"
+
+### 8.4 Viewing History
+
+See all your import change operations:
+
+**Command:**
+1. Open Command Palette (`Ctrl+Shift+P`)
+2. Type "Linker: Show Change History"
+3. View complete history list
+
+**History Display:**
+```
+Import Change History
+══════════════════════════════════════════
+
+1. [2025-11-27 14:32:15] Renamed utils.ts → helpers.ts
+   - 3 files modified
+   - Status: Active
+
+2. [2025-11-27 14:28:42] Renamed Button.tsx → CustomButton.tsx
+   - 5 files modified
+   - Status: Active
+
+3. [2025-11-27 14:20:18] Moved services/ → api/
+   - 12 files modified
+   - Status: Active
+
+[Current Position: 3/3]
+[Undo Available] [Redo Not Available]
+```
+
+### 8.5 Clearing History
+
+**When to Clear:**
+- Free up memory
+- Start fresh
+- Remove old operations
+
+**How to Clear:**
+1. Command Palette → "Linker: Clear Import History"
+2. Confirm the action
+3. History completely cleared
+
+**Warning:** Clearing history removes ability to undo previous operations!
+
+### 8.6 Configuration
+
+```json
+{
+  // Enable/disable undo/redo functionality
+  "linker.history.enabled": true,
+  
+  // Maximum number of operations to remember
+  "linker.history.maxEntries": 50  // Range: 10-100
+}
+```
+
+**Recommendations:**
+- Keep enabled (default) for safety
+- Increase `maxEntries` for large refactoring sessions
+- Decrease for memory-constrained systems
+
+---
+
+## 9. Path Alias Resolution
+
+One of Linker's most powerful features is comprehensive path alias support across ALL languages.
+
+### 9.1 TypeScript/JavaScript Aliases
+
+**Configuration File:** `tsconfig.json` or `jsconfig.json`
+
+**Setup Example:**
 ```json
 // tsconfig.json
 {
@@ -381,274 +1033,528 @@ Resolves and updates TypeScript path aliases from `tsconfig.json`.
     "paths": {
       "@/*": ["*"],
       "@components/*": ["components/*"],
+      "@utils/*": ["utils/*"],
+      "@services/*": ["services/*"],
       "~/*": ["*"]
     }
   }
 }
 ```
 
-**How it works:**
+**How Linker Uses This:**
+
+When you rename a file, Linker:
+1. Reads your `tsconfig.json` / `jsconfig.json`
+2. Parses the `paths` configuration
+3. Resolves imports using these aliases
+4. Updates aliased imports correctly
+
+**Examples:**
 
 ```typescript
-// Before renaming utils → helpers
-import { validateEmail } from '@/utils/validators';
+// File structure:
+// src/
+//   components/
+//     Button.tsx
+//   pages/
+//     Home.tsx
+
+// Home.tsx before rename:
 import { Button } from '@components/Button';
 
-// After renaming (Linker auto-updates)
-import { validateEmail } from '@/helpers/validators';  // ✅ Updated!
-import { Button } from '@components/Button';           // Not affected
+// Rename Button.tsx → CustomButton.tsx
+// Home.tsx after rename:
+import { Button } from '@components/CustomButton';  // ✅ Alias preserved!
 ```
 
-**Supported Alias Formats:**
-- `@/*` — Most common
-- `~/*` — Alternative root
-- Custom aliases like `@components/*`, `@utils/*`
+**Complex Alias Example:**
+```typescript
+// tsconfig.json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/components/*": ["src/components/*"],
+      "@/utils/*": ["src/utils/*"],
+      "~/shared/*": ["../shared/*"],
+      "#internal/*": ["internal/*"]
+    }
+  }
+}
 
----
+// All these work:
+import { Button } from '@/components/Button';
+import { format } from '@/utils/formatter';
+import { config } from '~/shared/config';
+import { helper } from '#internal/helper';
 
-### 5. Folder Rename Support
-
-**What it does:**  
-Updates all imports when you rename or move folders.
-
-**How it works:**
-
-When you rename a folder, Linker:
-1. Finds all files importing from that folder
-2. Updates the folder name in import paths
-3. Handles nested files and subfolders automatically
-
-**Example:**
-
-```
-Before:
-src/
-  services/
-    userService.ts
-    authService.ts
-  components/
-    App.tsx → import from '../services/userService'
-
-Rename services → api
-
-After:
-src/
-  api/
-    userService.ts
-    authService.ts
-  components/
-    App.tsx → import from '../api/userService'  // ✅ Updated!
+// Linker updates all of them correctly when files are renamed!
 ```
 
-**Language-Specific Behavior:**
-
-- **JavaScript/TypeScript:** Updates relative paths
-- **Python:** Updates module paths (dot notation)
-- **Go:** Updates package import paths
-- **CSS:** Updates @import paths
-
----
-
-### 6. Git Integration
-
-**What it does:**  
-Uses `git mv` for tracked files and optionally auto-stages changes.
-
-**Benefits:**
-- Preserves Git history
-- Works with Git workflows
-- Automatic staging of modified imports
-
-**Configuration:**
-
+**Settings:**
 ```json
 {
-  "linker.git.enabled": true,       // Use git mv for renames
-  "linker.autoStageChanges": false  // Auto-stage modified files
+  // TypeScript alias support (enabled by default)
+  "linker.multiLanguage.typescript.aliasSupport": true
+}
+```
+
+### 9.2 Python Path Aliases
+
+**Configuration File:** `pyproject.toml` (or auto-detection)
+
+**Setup Example:**
+```toml
+# pyproject.toml
+[tool.linker]
+paths = [
+    "src",
+    "app",
+    "lib"
+]
+```
+
+**Auto-Detection:**
+
+Linker automatically detects common Python structures:
+- `src/` directory at project root
+- `app/` directory at project root  
+- `lib/` directory at project root
+- Package name from `setup.py` or `pyproject.toml`
+
+**Examples:**
+
+```python
+# Project structure:
+# myproject/
+#   src/
+#     utils/
+#       helpers.py
+#   app.py
+
+# app.py before rename:
+from src.utils.helpers import format_date
+
+# Rename helpers.py → formatters.py
+# app.py after rename:
+from src.utils.formatters import format_date  # ✅ Updated!
+```
+
+**Complex Structure:**
+```python
+# Project structure:
+# myproject/
+#   src/
+#     myapp/
+#       models/
+#         user.py
+#       views/
+#         home.py
+
+# home.py before rename:
+from src.myapp.models.user import User
+from myapp.models.user import User  # Also supported
+
+# Rename user.py → account.py
+# home.py after rename:
+from src.myapp.models.account import User
+from myapp.models.account import User
+```
+
+**Settings:**
+```json
+{
+  // Python alias support (enabled by default)
+  "linker.multiLanguage.python.aliasSupport": true
+}
+```
+
+### 9.3 Go Module Aliases
+
+**Configuration File:** `go.mod`
+
+**Setup Example:**
+```go
+// go.mod
+module github.com/username/myproject
+
+go 1.21
+
+require (
+    github.com/gin-gonic/gin v1.9.0
+)
+
+replace github.com/username/myproject/v2 => ./v2
+```
+
+**How Linker Uses This:**
+
+1. Reads `module` directive for your project's module path
+2. Parses `replace` directives for local aliases
+3. Resolves import paths using module information
+4. Updates imports when packages (folders) are renamed
+
+**Examples:**
+
+```go
+// go.mod
+module github.com/username/myproject
+
+// File: main.go before rename:
+import (
+    "github.com/username/myproject/internal/utils"
+    "github.com/username/myproject/pkg/helpers"
+)
+
+// Rename internal/utils/ → internal/tools/
+// main.go after rename:
+import (
+    "github.com/username/myproject/internal/tools"  // ✅ Updated!
+    "github.com/username/myproject/pkg/helpers"
+)
+```
+
+**Replace Directives:**
+```go
+// go.mod
+module myapp
+
+replace (
+    myapp/v2 => ./version2
+    myapp/legacy => ../old-project
+)
+
+// File: main.go
+import "myapp/v2/utils"
+
+// Rename version2/utils/ → version2/helpers/
+// main.go after rename:
+import "myapp/v2/helpers"  // ✅ Updated via replace directive!
+```
+
+**Settings:**
+```json
+{
+  // Go module alias support (enabled by default)
+  "linker.multiLanguage.go.aliasSupport": true
+}
+```
+
+### 9.4 CSS Build Tool Aliases
+
+**Supported Build Tools:**
+- Webpack
+- Vite
+- Parcel
+- Rollup
+- Create React App
+
+**Configuration Files:**
+- `webpack.config.js`
+- `vite.config.js` / `vite.config.ts`
+- `.parcelrc`
+
+**Common Alias Patterns:**
+
+```javascript
+// webpack.config.js
+module.exports = {
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+      '~': path.resolve(__dirname, 'src'),
+      '@styles': path.resolve(__dirname, 'src/styles'),
+      '@components': path.resolve(__dirname, 'src/components')
+    }
+  }
+};
+
+// vite.config.js
+export default defineConfig({
+  resolve: {
+    alias: {
+      '@': '/src',
+      '~': '/src',
+      '@styles': '/src/styles'
+    }
+  }
+});
+```
+
+**Usage in CSS:**
+
+```css
+/* styles/main.css before rename */
+@import '@styles/variables';
+@import '@styles/mixins';
+@import '~bootstrap/dist/css/bootstrap';
+
+/* Rename src/styles/variables.css → theme.css */
+/* styles/main.css after rename */
+@import '@styles/theme';          /* ✅ Updated! */
+@import '@styles/mixins';
+@import '~bootstrap/dist/css/bootstrap';
+```
+
+**SCSS Example:**
+```scss
+// webpack ~ alias
+@import '~@/styles/variables';
+@import '~@/styles/mixins';
+
+// Rename mixins.scss → utilities.scss
+@import '~@/styles/variables';
+@import '~@/styles/utilities';  // ✅ Updated!
+```
+
+**Settings:**
+```json
+{
+  // CSS alias support (enabled by default)
+  "linker.multiLanguage.css.aliasSupport": true
+}
+```
+
+### 9.5 Troubleshooting Aliases
+
+**Problem: Aliases Not Detected**
+
+**Solution:**
+1. Verify config file exists (`tsconfig.json`, `go.mod`, etc.)
+2. Check config file syntax is valid (run `tsc --noEmit` for TypeScript)
+3. Reload VS Code window: `Ctrl+Shift+P` → "Reload Window"
+4. Enable verbose logging (see section 23)
+
+**Problem: Aliases Updated Incorrectly**
+
+**Solution:**
+1. Check `baseUrl` is set correctly in `tsconfig.json`
+2. Verify paths don't overlap or conflict
+3. Test with simple alias first (just `@/*`)
+4. Review Linker output console for warnings
+
+**Problem: Only Some Aliases Work**
+
+**Solution:**
+1. Ensure alias format matches Linker's supported patterns
+2. Check wildcards are used correctly (`/*` at end)
+3. Verify file being renamed is within aliased path
+4. Test without wildcards for specific paths
+
+---
+
+## 10. Git Integration
+
+### 10.1 Git MV for File History
+
+**What is `git mv`?**
+
+When you rename a file in a Git repository, Git can record it as either:
+1. **Delete + Add:** Loses file history (bad ❌)
+2. **Move/Rename:** Preserves file history (good ✅)
+
+Linker uses `git mv` to preserve your file history.
+
+**Benefits:**
+- ✅ Git history follows the file to its new name
+- ✅ `git log` shows complete history
+- ✅ `git blame` works correctly
+- ✅ Better for code review and auditing
+
+**Configuration:**
+```json
+{
+  // Use git mv for tracked files (highly recommended)
+  "linker.git.useGitMv": true
+}
+```
+
+**How It Works:**
+
+```
+Scenario: Rename utils.ts → helpers.ts
+
+Without git mv:
+- Git sees: deleted utils.ts, added helpers.ts
+- History lost ❌
+
+With git mv (Linker):
+- Git sees: renamed utils.ts → helpers.ts
+- History preserved ✅
+```
+
+**Git Status After Rename:**
+```bash
+$ git status
+On branch main
+Changes to be staged:
+  renamed:    src/utils.ts -> src/helpers.ts
+  modified:   src/app.ts  # Import updated by Linker
+```
+
+### 10.2 Auto-Staging Modified Files
+
+**What Is Auto-Staging?**
+
+When Linker updates imports in files, it can automatically stage those changes in Git.
+
+**Configuration:**
+```json
+{
+  // Auto-stage files modified by Linker
+  "linker.git.autoStage": false  // Default: false (manual staging)
 }
 ```
 
 **Behavior:**
 
-| File Status | Linker Action |
-|-------------|---------------|
-| Tracked by Git | Uses `git mv` |
-| Untracked | Uses regular file system move |
-| Modified imports | Optionally auto-stages if enabled |
+| Setting | What Happens |
+|---------|-------------|
+| `false` (default) | Files modified but not staged (you `git add` manually) |
+| `true` | Files automatically staged (ready for commit) |
+
+**Recommendation:**
+- **Keep false** for manual control
+- **Set true** if you want automatic commits
+- **Team preference** - discuss with your team
+
+### 10.3 Working with Git Workflows
+
+**Standard Workflow:**
+
+```bash
+# 1. Create a feature branch
+$ git checkout -b refactor/rename-utils
+
+# 2. Rename file in VS Code using Linker
+#    (Linker updates all imports automatically)
+
+# 3. Check what changed
+$ git status
+$ git diff
+
+# 4. Stage changes
+$ git add src/
+
+# 5. Commit with descriptive message
+$ git commit -m "Refactor: Rename utils to helpers
+
+- Renamed src/utils.ts to src/helpers.ts
+- Updated 12 import statements across codebase
+- No functional changes"
+
+# 6. Push and create PR
+$ git push origin refactor/rename-utils
+```
+
+**Large Refactoring Workflow:**
+
+```bash
+# 1. Create refactoring branch
+$ git checkout -b refactor/restructure-components
+
+# 2. Rename multiple files/folders with Linker
+#    Review each preview before applying
+
+# 3. After each rename, check diff
+$ git diff --stat
+
+# 4. Commit after each logical group
+$ git add components/
+$ git commit -m "Move Button component to ui/ folder"
+
+$ git add pages/
+$ git commit -m "Update imports after component move"
+
+# 5. Final verification
+$ npm run build  # or your build command
+$ npm test
+
+# 6. Push when all tests pass
+$ git push origin refactor/restructure-components
+```
+
+### 10.4 Git Best Practices with Linker
+
+**DO:**
+- ✅ Commit before large refactorings
+- ✅ Review `git diff` after applying changes
+- ✅ Use descriptive commit messages
+- ✅ Test your code after renames
+- ✅ Create feature branches for refactoring
+
+**DON'T:**
+- ❌ Rename files without committing first
+- ❌ Apply changes without reviewing preview
+- ❌ Mix refactoring with feature changes
+- ❌ Skip testing after large renames
+- ❌ Force push without team coordination
+
+**Commit Message Templates:**
+
+```bash
+# Simple rename
+git commit -m "Rename utils.ts to helpers.ts"
+
+# With context
+git commit -m "Refactor: Rename utils module to helpers
+
+- Renamed src/utils/ to src/helpers/
+- Updated 24 import statements
+- No breaking changes
+- All tests pass"
+
+# Multiple files
+git commit -m "Reorganize component structure
+
+- Moved Button, Input, Select to ui/forms/
+- Updated imports in 18 files
+- Improved project organization"
+```
+
+### 10.5 Handling Merge Conflicts
+
+**If Conflicts Occur:**
+
+```bash
+# 1. Start merge/rebase
+$ git merge main
+# Or: git rebase main
+
+# 2. If conflicts in import statements:
+Auto-merging src/app.ts
+CONFLICT (content): Merge conflict in src/app.ts
+
+# 3. Open conflicted file
+#    Look for conflict markers:
+<<<<<<< HEAD
+import { helper } from './helpers';
+=======
+import { util } from './utils';
+>>>>>>> main
+
+# 4. Resolve manually:
+#    - Check which file name is correct now
+#    - Keep the correct import
+#    - Remove conflict markers
+
+# 5. Stage resolved files
+$ git add src/app.ts
+
+# 6. Continue merge/rebase
+$ git merge --continue
+# Or: git rebase --continue
+```
+
+**Preventing Conflicts:**
+1. Pull latest changes before refactoring
+2. Communicate with team about large refactorings
+3. Refactor in small, atomic commits
+4. Use feature branches for major changes
 
 ---
 
-## Configuration
-
-### Quick Settings
-
-Access via: `File` → `Preferences` → `Settings` → Search "Linker"
-
-Or edit `settings.json` directly (`Ctrl+,` → click `{}` icon)
-
-### Complete Settings Reference
-
-#### Basic Settings
-
-```json
-{
-  // File types to scan for imports
-  "linker.fileExtensions": [
-    "js", "ts", "jsx", "tsx", "mjs", "cjs",  // JavaScript/TypeScript
-    "py",                                      // Python
-    "go",                                      // Go
-    "css", "scss", "less"                     // CSS
-  ],
-  
-  // Folders to exclude from scanning
-  "linker.exclude": [
-    "**/node_modules/**",
-    "**/.git/**",
-    "**/dist/**",
-    "**/build/**",
-    "**/__pycache__/**",
-    "**/*.egg-info/**"
-  ]
-}
-```
-
-#### Preview Settings
-
-```json
-{
-  // Enable visual diff preview
-  "linker.preview.diffView": true,
-  
-  // Layout: "side-by-side" or "inline"
-  "linker.preview.layout": "side-by-side"
-}
-```
-
-#### Formatting Settings
-
-```json
-{
-  // Quote style: "single", "double", or "auto"
-  "linker.formatting.quoteStyle": "auto",
-  
-  // Semicolons: "always", "never", or "auto"
-  "linker.formatting.semicolons": "auto"
-}
-```
-
-#### History Settings
-
-```json
-{
-  // Enable undo/redo functionality
-  "linker.history.enabled": true,
-  
-  // Maximum number of history entries
-  "linker.history.maxEntries": 50
-}
-```
-
-#### Language Settings
-
-```json
-{
-  // Enable/disable specific language support
-  "linker.multiLanguage.python": true,
-  "linker.multiLanguage.go": true,
-  "linker.multiLanguage.css": true
-}
-```
-
-#### Git Settings
-
-```json
-{
-  // Automatically stage files modified by Linker
-  "linker.autoStageChanges": false
-}
-```
-
-### Recommended Configurations
-
-#### For JavaScript/TypeScript Projects
-
-```json
-{
-  "linker.fileExtensions": ["js", "ts", "jsx", "tsx", "mjs", "cjs"],
-  "linker.exclude": ["**/node_modules/**", "**/dist/**", "**/build/**"],
-  "linker.formatting.quoteStyle": "single",
-  "linker.formatting.semicolons": "never"
-}
-```
-
-#### For Python Projects
-
-```json
-{
-  "linker.fileExtensions": ["py"],
-  "linker.exclude": ["**/__pycache__/**", "**/*.egg-info/**", "**/venv/**"],
-  "linker.multiLanguage.python": true
-}
-```
-
-#### For Multi-Language Projects
-
-```json
-{
-  "linker.fileExtensions": ["js", "ts", "py", "go", "css"],
-  "linker.exclude": [
-    "**/node_modules/**",
-    "**/__pycache__/**",
-    "**/dist/**"
-  ],
-  "linker.multiLanguage.python": true,
-  "linker.multiLanguage.go": true,
-  "linker.multiLanguage.css": true
-}
-```
-
----
-
-## Advanced Usage
-
-### Working with Monorepos
-
-For large monorepos with multiple packages:
-
-```json
-{
-  "linker.exclude": [
-    "**/node_modules/**",
-    "**/packages/*/dist/**",
-    "**/packages/*/build/**"
-  ],
-  "linker.fileExtensions": ["js", "ts", "jsx", "tsx"]
-}
-```
-
-### Custom Import Patterns
-
-Linker automatically handles most import patterns, but you can optimize for your project:
-
-1. **Path Aliases:** Configure in `tsconfig.json`
-2. **Custom Modules:** Add to `fileExtensions` if needed
-3. **Exclusions:** Add specific paths to `exclude` for performance
-
-### Batch Operations
-
-When renaming multiple files:
-
-1. Rename files one at a time
-2. Review and apply each preview
-3. Use undo/redo to manage changes
-4. Check Git diff before committing
-
-### Integration with Other Tools
-
-**ESLint:** Linker preserves your ESLint configuration  
-**Prettier:** Format files after Linker updates imports  
-**Git Hooks:** Linker works with pre-commit hooks  
-**CI/CD:** No conflicts with automated builds  
+##  
 
 ---
 
@@ -833,4 +1739,4 @@ If Linker helps you:
 
 **Happy Coding! 🎉**
 
-*Last updated: November 2025 | Version 1.1.3 (Phase 2)*
+*Last updated: November 2025 | Version 1.1.5 *
