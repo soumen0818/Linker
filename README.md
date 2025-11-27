@@ -16,10 +16,11 @@
 ### 🎬 Watch Linker in Action
 
 <div align="center">
-  <video src="https://res.cloudinary.com/dsg5dz0ia/video/upload/v1764255598/LINKER_p6bsua.mov" controls width="100%">
-    Your browser does not support the video tag.
-  </video>
-  <p><em>See how Linker automatically updates imports when you rename or move files across your entire workspace!</em></p>
+
+https://github.com/soumen0818/Linker/images/linker2.mp4
+
+*See how Linker automatically updates imports when you rename or move files across your entire workspace!*
+
 </div>
 
 [🌐 Official Website](https://linker-steel-xi.vercel.app/) | [Features](#-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [Languages](#-supported-languages) • [Configuration](#%EF%B8%8F-configuration) • [Documentation](#-documentation)
