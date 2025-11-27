@@ -17,7 +17,7 @@
 
 <div align="center">
 
-https://github.com/soumen0818/Linker/images/linker2.mp4
+https://github.com/user-attachments/assets/b70cc6a7-4cf4-4a1d-a4c8-ec5e8bbad314
 
 *See how Linker automatically updates imports when you rename or move files across your entire workspace!*
 
