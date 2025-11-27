@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.6] - 2025-11-27
+
+### 📹 Demo & Documentation Release
+
+#### ✨ Improvements
+- **Added Demo GIF**: Complete workflow demonstration in README
+  - Shows installation, file rename, import updates, and Git integration
+  - Optimized GIF format for VS Code Marketplace compatibility
+  - Better visual representation for users
+
+#### 📝 Documentation
+- Updated README with single comprehensive demo GIF
+- Improved demo section layout for better user experience
+
+---
+
 ## [1.1.5] - 2025-11-27
 
 ### 🎨 UI/UX Enhancement Release
