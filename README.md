@@ -17,13 +17,13 @@
 
 <div align="center">
 
-https://github.com/user-attachments/assets/b70cc6a7-4cf4-4a1d-a4c8-ec5e8bbad314
+![Linker Demo](assets/linker-demo.gif)
 
-*See how Linker automatically updates imports when you rename or move files across your entire workspace!*
+*Complete workflow: Install → Rename files → Auto-update imports → Git integration*
 
 </div>
 
-[🌐 Official Website](https://linker-steel-xi.vercel.app/) | [Features](#-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [Languages](#-supported-languages) • [Configuration](#%EF%B8%8F-configuration) • [Documentation](#-documentation)
+[🌐 Official Website](https://linker-steel-xi.vercel.app/) | [Features](#-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [Languages](#-supported-languages) • [Configuration](#%EF%B8%8F-configuration) • [Documentation](https://linker-steel-xi.vercel.app/documentation)
 
 </div>
 
