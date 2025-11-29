@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.7] - 2025-11-29
+
+### 📚 Documentation & Community Release
+
+#### ✨ New
+- **Contributing Guide**: Added comprehensive CONTRIBUTING.md
+  - Detailed development setup instructions
+  - Code of conduct and contribution guidelines
+  - Project structure explanation
+  - Testing and debugging guide
+  - Pull request process documentation
+  - Bug reporting and feature request templates
+
+#### 📝 Improvements
+- Enhanced README with expanded contributing section
+- Added links to contributing guide
+- Improved community engagement information
+- Updated documentation structure
+
+#### 🎯 Community Focus
+- Making it easier for developers to contribute
+- Clear guidelines for code contributions
+- Better onboarding for new contributors
+- Transparent development process
+
+---
+
 ## [1.1.6] - 2025-11-27
 
 ### 📹 Demo & Documentation Release
