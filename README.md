@@ -47,9 +47,6 @@ If your project has **1,000+ files**, add these settings to `.vscode/settings.js
 
 ## ✨ Features
 
-### 🎯 Phase 2 - Production Ready
-
-Linker has reached Phase 2 with enterprise-grade features for professional development workflows.
 
 #### 🔄 **Smart Import Updates**
 - Automatically detect and update imports when files or folders are renamed
@@ -466,7 +463,7 @@ If Linker saves you time, please:
 
 ## 📊 Project Status
 
-**Current Version:** 1.1.5  
+**Current Version:** 1.1.7 
 **Status:** Production Ready ✅  
 **Languages:** 4 (JavaScript/TypeScript, Python, Go, CSS)  
 **Active Development:** Yes  
@@ -550,29 +547,47 @@ If Linker saves you time, please:
 
 ## 🤝 Contributing
 
-Contributions are welcome! Here's how you can help:
+We welcome and appreciate contributions from the community! Whether you're fixing bugs, adding features, or improving documentation, your help makes Linker better for everyone.
 
-1. **Report bugs** — [Open an issue](https://github.com/soumen0818/Linker/issues)
-2. **Request features** — Share your ideas
-3. **Submit PRs** — Fix bugs or add features
-4. **Improve docs** — Help make documentation better
+### How to Contribute
 
-### Development Setup
+1. **📖 Read the Contributing Guide** — Check out [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines
+2. **🐛 Report Bugs** — [Open an issue](https://github.com/soumen0818/Linker/issues) with detailed information
+3. **💡 Request Features** — Share your ideas and use cases
+4. **💻 Submit Pull Requests** — Fix bugs, add features, or improve performance
+5. **📝 Improve Documentation** — Help others understand and use Linker
+
+### Quick Start for Contributors
 
 ```bash
-# Clone the repository
-git clone https://github.com/soumen0818/Linker.git
+# 1. Fork and clone the repository
+git clone https://github.com/YOUR_USERNAME/Linker.git
 cd Linker
 
-# Install dependencies
+# 2. Install dependencies
 npm install
 
-# Build the extension
+# 3. Build the extension
 npm run build
 
-# Run in development mode
+# 4. Run in development mode
 # Press F5 in VS Code to open Extension Development Host
+
+# 5. Make your changes and test thoroughly
+
+# 6. Submit a pull request
 ```
+
+### What We're Looking For
+
+- 🐛 **Bug Fixes** — Help squash bugs from our issue tracker
+- ✨ **New Features** — Add support for new languages or enhance existing features
+- 🚀 **Performance Improvements** — Make Linker faster and more efficient
+- 📚 **Documentation** — Improve guides, add examples, fix typos
+- 🧪 **Tests** — Add test cases to improve code quality
+- 🌍 **Translations** — Help make Linker accessible worldwide
+
+**Please read [CONTRIBUTING.md](CONTRIBUTING.md) before starting your contribution!**
 
 ---
 
@@ -616,6 +631,6 @@ If you find **Linker** useful, please consider:
 
 **Developed by [Soumen Das](https://www.soumendas.me/)** | [LinkedIn](https://www.linkedin.com/in/soumen-das-76b867218/)
 
-**Version 1.1.5** | [🌐 Official Site](https://linker-steel-xi.vercel.app/) | [⬆ Back to Top](#-linker)
+**Version 1.1.7** | [🌐 Official Site](https://linker-steel-xi.vercel.app/) | [⬆ Back to Top](#-linker)
 
 </div>
