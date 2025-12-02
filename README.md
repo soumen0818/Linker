@@ -23,7 +23,7 @@
 
 </div>
 
-[🌐 Official Website](https://linker-steel-xi.vercel.app/) | [Features](#-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [Languages](#-supported-languages) • [Configuration](#%EF%B8%8F-configuration) • [Documentation](https://linker-steel-xi.vercel.app/documentation)
+[🌐 Official Website](https://www.importlinker.xyz/) | [Features](#-features) • [Installation](#-installation) • [Quick Start](#-quick-start) • [Languages](#-supported-languages) • [Configuration](#%EF%B8%8F-configuration) • [Documentation](https://linker-steel-xi.vercel.app/documentation)
 
 </div>
 
@@ -631,6 +631,6 @@ If you find **Linker** useful, please consider:
 
 **Developed by [Soumen Das](https://www.soumendas.me/)** | [LinkedIn](https://www.linkedin.com/in/soumen-das-76b867218/)
 
-**Version 1.1.7** | [🌐 Official Site](https://linker-steel-xi.vercel.app/) | [⬆ Back to Top](#-linker)
+**Version 1.1.7** | [🌐 Official Site](https://www.importlinker.xyz/) | [⬆ Back to Top](#-linker)
 
 </div>
